@@ -1,0 +1,160 @@
+// main: ../main.scss
+/*--------------------------------------------------------------
+# Services Section
+--------------------------------------------------------------*/
+.services {
+  .service-item {
+    box-shadow: 0px 0 30px color-mix(in srgb, var(--default-color), transparent 90%);
+    height: 100%;
+    padding: 60px 30px;
+    text-align: center;
+    transition: 0.3s;
+    border-radius: 5px;
+
+    .icon {
+      font-size: 36px;
+      padding: 20px 20px;
+      border-radius: 4px;
+      position: relative;
+      margin-bottom: 25px;
+      display: inline-block;
+      line-height: 0;
+      transition: 0.3s;
+    }
+
+    h3 {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .read-more {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 16px;
+      padding: 8px 20px;
+
+      i {
+        line-height: 0;
+        margin-left: 5px;
+        font-size: 18px;
+      }
+    }
+
+    &.item-cyan {
+      border-bottom: 3px solid #0dcaf0;
+
+      .icon {
+        color: #0dcaf0;
+        background: rgba(13, 202, 240, 0.1);
+      }
+
+      .read-more {
+        color: #0dcaf0;
+      }
+
+      &:hover {
+        background: #0dcaf0;
+      }
+    }
+
+    &.item-orange {
+      border-bottom: 3px solid #fd7e14;
+
+      .icon {
+        color: #fd7e14;
+        background: rgba(253, 126, 20, 0.1);
+      }
+
+      .read-more {
+        color: #fd7e14;
+      }
+
+      &:hover {
+        background: #fd7e14;
+      }
+    }
+
+    &.item-teal {
+      border-bottom: 3px solid #20c997;
+
+      .icon {
+        color: #20c997;
+        background: rgba(32, 201, 151, 0.1);
+      }
+
+      .read-more {
+        color: #20c997;
+      }
+
+      &:hover {
+        background: #20c997;
+      }
+    }
+
+    &.item-red {
+      border-bottom: 3px solid #df1529;
+
+      .icon {
+        color: #df1529;
+        background: rgba(223, 21, 4, 0.1);
+      }
+
+      .read-more {
+        color: #df1529;
+      }
+
+      &:hover {
+        background: #df1529;
+      }
+    }
+
+    &.item-indigo {
+      border-bottom: 3px solid #6610f2;
+
+      .icon {
+        color: #6610f2;
+        background: rgba(102, 16, 242, 0.1);
+      }
+
+      .read-more {
+        color: #6610f2;
+      }
+
+      &:hover {
+        background: #6610f2;
+      }
+    }
+
+    &.item-pink {
+      border-bottom: 3px solid #f3268c;
+
+      .icon {
+        color: #f3268c;
+        background: rgba(243, 38, 140, 0.1);
+      }
+
+      .read-more {
+        color: #f3268c;
+      }
+
+      &:hover {
+        background: #f3268c;
+      }
+    }
+
+    &:hover {
+
+      h3,
+      p,
+      .read-more {
+        color: #fff;
+      }
+
+      .icon {
+        background: #fff;
+      }
+    }
+  }
+}

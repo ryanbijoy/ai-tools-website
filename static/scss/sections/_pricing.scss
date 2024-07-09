@@ -1,0 +1,107 @@
+// main: ../main.scss
+/*--------------------------------------------------------------
+# Pricing Section
+--------------------------------------------------------------*/
+.pricing {
+  .pricing-tem {
+    box-shadow: 0px 0 30px color-mix(in srgb, var(--default-color), transparent 90%);
+    padding: 40px 20px;
+    text-align: center;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s;
+    height: 100%;
+
+    @media (min-width: 1200px) {
+      &:hover {
+        transform: scale(1.1);
+        box-shadow: 0px 0 30px color-mix(in srgb, var(--default-color), transparent 85%);
+      }
+    }
+  }
+
+  h3 {
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  .price {
+    font-size: 36px;
+    color: var(--heading-color);
+    font-weight: 600;
+    font-family: var(--heading-font);
+
+    sup {
+      font-size: 20px;
+      top: -15px;
+      left: -3px;
+    }
+
+    span {
+      color: color-mix(in srgb, var(--default-color), transparent 50%);
+      font-size: 16px;
+      font-weight: 300;
+    }
+  }
+
+  .icon {
+    padding: 20px 0;
+
+    i {
+      font-size: 48px;
+    }
+  }
+
+  ul {
+    padding: 0;
+    list-style: none;
+    color: var(--default-color);
+    text-align: center;
+    line-height: 26px;
+    font-size: 16px;
+    margin-bottom: 25px;
+
+    li {
+      padding-bottom: 10px;
+    }
+
+    .na {
+      color: color-mix(in srgb, var(--default-color), transparent 70%);
+      text-decoration: line-through;
+    }
+  }
+
+  .btn-buy {
+    display: inline-block;
+    padding: 8px 40px 10px 40px;
+    border-radius: 50px;
+    color: var(--accent-color);
+    transition: none;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: var(--heading-font);
+    font-weight: 600;
+    transition: 0.3s;
+    border: 1px solid var(--accent-color);
+
+    &:hover {
+      background: var(--accent-color);
+      color: var(--contrast-color);
+    }
+  }
+
+  .featured {
+    width: 200px;
+    position: absolute;
+    top: 18px;
+    right: -68px;
+    transform: rotate(45deg);
+    z-index: 1;
+    font-size: 14px;
+    padding: 1px 0 3px 0;
+    background: var(--accent-color);
+    color: var(--contrast-color);
+  }
+}

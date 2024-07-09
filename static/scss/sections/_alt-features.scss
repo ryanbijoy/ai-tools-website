@@ -1,0 +1,28 @@
+// main: ../main.scss
+/*--------------------------------------------------------------
+# Alt Features Section
+--------------------------------------------------------------*/
+.alt-features {
+  .icon-box {
+    display: flex;
+
+    h4 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0 0 10px 0;
+    }
+
+    i {
+      font-size: 44px;
+      line-height: 44px;
+      color: var(--accent-color);
+      margin-right: 15px;
+    }
+
+    p {
+      font-size: 15px;
+      color: color-mix(in srgb, var(--default-color), transparent 30%);
+      margin-bottom: 0;
+    }
+  }
+}

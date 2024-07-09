@@ -1,0 +1,93 @@
+// main: ../main.scss
+/*--------------------------------------------------------------
+# Team Section
+--------------------------------------------------------------*/
+.team {
+  .team-member {
+    box-shadow: 0px 0 30px color-mix(in srgb, var(--default-color), transparent 92%);
+    overflow: hidden;
+    text-align: center;
+    border-radius: 5px;
+    transition: 0.3s;
+
+    .member-img {
+      position: relative;
+      overflow: hidden;
+
+      &:after {
+        position: absolute;
+        content: "";
+        left: 0;
+        bottom: 0;
+        height: 100%;
+        width: 100%;
+        background: url(../img/team-shape.svg) no-repeat center bottom;
+        background-size: contain;
+        z-index: 1;
+      }
+    }
+
+    .social {
+      position: absolute;
+      right: -100%;
+      top: 30px;
+      opacity: 0;
+      border-radius: 4px;
+      transition: 0.5s;
+      background: color-mix(in srgb, var(--background-color), transparent 60%);
+      z-index: 2;
+
+      a {
+        transition: color 0.3s;
+        color: color-mix(in srgb, var(--default-color), transparent 50%);
+        margin: 15px 12px;
+        display: block;
+        line-height: 0;
+        text-align: center;
+
+        &:hover {
+          color: var(--default-color);
+        }
+      }
+
+      i {
+        font-size: 18px;
+      }
+    }
+
+    .member-info {
+      padding: 10px 15px 20px 15px;
+
+      h4 {
+        font-weight: 700;
+        margin-bottom: 5px;
+        font-size: 20px;
+      }
+
+      span {
+        display: block;
+        font-size: 14px;
+        font-weight: 400;
+        color: color-mix(in srgb, var(--default-color), transparent 50%);
+      }
+
+      p {
+        font-style: italic;
+        font-size: 14px;
+        padding-top: 15px;
+        line-height: 26px;
+        color: color-mix(in srgb, var(--default-color), transparent 30%);
+      }
+    }
+
+    &:hover {
+      transform: scale(1.08);
+      box-shadow: 0px 0 30px color-mix(in srgb, var(--default-color), transparent 85%);
+
+      .social {
+        right: 8px;
+        opacity: 1;
+      }
+    }
+  }
+}
