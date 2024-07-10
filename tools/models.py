@@ -2,11 +2,17 @@ from django.db import models
 
 
 # Create your models here.
-class UserDetails(models.Model):
+class UserDetail(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=128)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'last_name']
+
+    def __str__(self):
+        return self.email
 
 
 class ToolRating(models.Model):
@@ -16,9 +22,12 @@ class ToolRating(models.Model):
 
 
 class AiTool(models.Model):
-    ai_tool = models.CharField(max_length=15)
-    type = models.CharField(max_length=10)
-    description = models.CharField(max_length=50)
-    logo = models.ImageField(upload_to="static/logo")
-    affiliate_link = models.BooleanField()
-    webiste_url = models.URLField()
+    ai_tool = models.CharField(max_length=25)
+    type = models.CharField(max_length=25)
+    description = models.CharField()
+    logo = models.CharField(max_length=50)
+    affiliate_link = models.BooleanField(default=False)
+    website_url = models.URLField(blank=True)
+
+    def __str__(self):
+        return self.ai_tool

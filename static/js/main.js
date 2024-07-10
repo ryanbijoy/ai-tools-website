@@ -206,3 +206,12 @@
   document.addEventListener('scroll', navmenuScrollspy);
 
 })();
+
+document.addEventListener('DOMContentLoaded', function() {
+    const stars = document.querySelectorAll('.star-rating input');
+    stars.forEach(star => {
+        star.addEventListener('change', function() {
+            thankYouMessage.style.display = 'block';
+        });
+    });
+});

@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Create Account{% endblock %}
+{% block content %}
+
+<div class="page-title">
+    <br><br><br><br>
+  <nav class="breadcrumbs">
+    <div class="container">
+      <ol>
+        <li><a href="index.html">Home</a></li>
+        <li class="current">Service Details</li>
+      </ol>
+    </div>
+  </nav>
+</div>
+
+
+<section id="service-details" class="service-details section">
+  <div class="container">
+      <div class="row gy-5">
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+              <div class="service-box">
+                  <h4>ChatGPT</h4>
+                  <div class="services-list">
+                      <a href="#" class="active" data-target="about"><i class="bi bi-arrow-right-circle"></i><span>About</span></a>
+                      <a href="#" data-target="how-to-use"><i class="bi bi-arrow-right-circle"></i><span>How to Use</span></a>
+                      <!-- Add more AI tools as needed -->
+                  </div>
+              </div><!-- End Services List -->
+
+              <div class="service-box">
+                  <h4>Give a Rating</h4>
+                  <div class="download-catalog">
+                      <a href="#">
+                        <div class="star-rating">
+                            <input type="radio" id="5-stars" name="rating" value="5">
+                            <label for="5-stars" class="star">&#9733;</label>
+                            <input type="radio" id="4-stars" name="rating" value="4">
+                            <label for="4-stars" class="star">&#9733;</label>
+                            <input type="radio" id="3-stars" name="rating" value="3">
+                            <label for="3-stars" class="star">&#9733;</label>
+                            <input type="radio" id="2-stars" name="rating" value="2">
+                            <label for="2-stars" class="star">&#9733;</label>
+                            <input type="radio" id="1-star" name="rating" value="1">
+                            <label for="1-star" class="star">&#9733;</label>
+                        </div>
+
+                      </a>
+                  </div>
+              </div><!-- End Services List -->
+          </div>
+
+          <div class="col-lg-8 ps-lg-5" data-aos="fade-up" data-aos-delay="200">
+              <div class="service-content" id="about-content">
+                  <img src="assets/img/about.jpg" alt="ChatGPT" class="img-fluid services-img">
+                  <h3>About ChatGPT</h3>
+                  <p>
+                      ChatGPT is a conversational AI developed by OpenAI. It can understand and generate human-like text based on the input it receives, making it useful for a wide range of applications including customer support, virtual assistants, and content creation.
+                  </p>
+                  <ul>
+                      <li><i class="bi bi-check-circle"></i> <span>Developed by OpenAI.</span></li>
+                      <li><i class="bi bi-check-circle"></i> <span>Generates human-like text.</span></li>
+                      <li><i class="bi bi-check-circle"></i> <span>Useful for customer support, virtual assistants, and content creation.</span></li>
+                  </ul>
+                  <p>
+                      ChatGPT utilizes state-of-the-art natural language processing techniques to provide accurate and relevant responses. It is constantly updated and improved to ensure high performance and user satisfaction.
+                  </p>
+                  <p>
+                      With ChatGPT, businesses and developers can integrate advanced conversational capabilities into their applications, enhancing user experience and operational efficiency.
+                  </p>
+              </div>
+
+              <div class="service-content" id="how-to-use-content" style="display: none;">
+                  <img src="assets/img/how-to-use.jpg" alt="ChatGPT How to Use" class="img-fluid services-img">
+                  <h3>How to Use ChatGPT</h3>
+                  <p>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin semper, nisi nec varius condimentum, ligula risus consectetur leo, vel malesuada libero risus ut est.
+                  </p>
+                  <ul>
+                      <li><i class="bi bi-check-circle"></i> <span>Step 1: Lorem ipsum dolor sit amet.</span></li>
+                      <li><i class="bi bi-check-circle"></i> <span>Step 2: Consectetur adipiscing elit.</span></li>
+                      <li><i class="bi bi-check-circle"></i> <span>Step 3: Proin semper, nisi nec varius condimentum.</span></li>
+                  </ul>
+                  <p>
+                      Integer vestibulum mi vitae nisi fermentum, nec maximus nisi tristique. Sed efficitur justo eu eros consequat, et placerat justo ullamcorper.
+                  </p>
+                  <p>
+                      In in turpis id ex pretium consequat vel in dolor. Suspendisse potenti. Donec sodales purus sit amet lacus vulputate interdum.
+                  </p>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
+{% endblock %}

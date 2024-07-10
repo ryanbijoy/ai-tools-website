@@ -1,5 +1,5 @@
 from django import forms
-from .models import UserDetails
+from .models import UserDetail, ToolRating
 from django.contrib.auth import password_validation
 
 
@@ -8,7 +8,7 @@ class SignUpForm(forms.ModelForm):
     confirm_password = forms.CharField(widget=forms.PasswordInput)
 
     class Meta:
-        model = UserDetails
+        model = UserDetail
         fields = ['first_name', 'last_name', 'email', 'password', 'confirm_password']
 
     def clean(self):

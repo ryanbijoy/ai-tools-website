@@ -1,3 +1,15 @@
 from django.contrib import admin
+from .models import AiTool
+from import_export.admin import ImportExportModelAdmin
 
-# Register your models here.
+
+@admin.action(description="Mark selected as Affiliate Present")
+def affiliate_present(modeladmin, request, queryset):
+    queryset.update(affiliate_link=True)
+
+
+@admin.register(AiTool)
+class AiToolAdmin(ImportExportModelAdmin):
+    list_display = ('ai_tool', 'type', 'description', 'logo', 'affiliate_link')
+    ordering = ('ai_tool',)
+    actions = [affiliate_present]
