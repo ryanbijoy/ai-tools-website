@@ -82,7 +82,7 @@
         <div class="flex fixed top-10 left-10">
           <a href="/"><h1 class="text-md font-bold ml-2">ai-website</h1></a>
         </div>
-        <div class="flex flex-col max-w-sm mx-auto mb-8">
+        <div class="flex flex-col max-w-md mx-auto mb-8">
           <br><br><br>
           <h2 class="text-2xl font-bold mb-4">Create account</h2>
           <p class="text-gray-600 mb-6">Sign up for an account to get started</p>
@@ -129,17 +129,17 @@
               <img src="https://www.google.com/favicon.ico" class="w-5 h-5 mr-2"> Continue with Google
             </button>
           </form>
-          <p class="text-gray-600 text-sm mt-4">By signing up you agree to the <a href="#" class="text-blue-500">Terms of Service</a> & <a href="#" class="text-blue-500">Privacy Policy</a></p>
-          <p class="text-gray-600 text-sm mt-2">Already have an account? <a href="#" class="text-blue-500">Log in</a></p>
+          <p class="text-gray-600 text-sm mt-4">By signing up you agree to the <a href="{% url 'terms_of_service' %}" class="text-blue-500">Terms of Service</a> & <a href="{% url 'privacy_policy' %}" class="text-blue-500">Privacy Policy</a></p>
+          <p class="text-gray-600 text-sm mt-2">Already have an account? <a href="{% url 'login' %}" class="text-blue-500">Log in</a></p>
         </div>
       </div>
       <!-- Testimonial -->
       <div class="w-1/2 bg-gradient-to-r from-blue-500 to-purple-600 text-white p-8 rounded-r-lg flex items-center justify-center">
-        <div class="max-w-sm mx-auto bg-black bg-opacity-30 p-6 rounded-lg">
+        <div class="max-w-md mx-auto bg-black bg-opacity-30 p-6 rounded-lg">
           <div class="mb-4 flex">
-            <img src="{% static 'img/ryan.jpeg' %}" alt="Avatar" class="w-12 h-12 rounded-full">
+            <img src="{% static 'img/ryan.jpeg' %}" class="w-16 h-16 rounded-full">
           </div>
-          <blockquote class="text-md italic mb-4 text-gray-300">
+          <blockquote class="text-lg italic mb-4 text-gray-300">
             "At 17 years old, I am an Entrepreneur and Artificial Intelligence enthusiast. Driven by a strong desire to learn, innovate, and create positive change through various solutions."
           </blockquote>
           <p class="font-bold">Ryan Bijoy</p>

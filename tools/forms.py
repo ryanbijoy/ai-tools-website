@@ -31,11 +31,29 @@ class SignUpForm(forms.ModelForm):
             raise forms.ValidationError("This Email already exists.")
         return email
 
-    def clean(self):
-        cleaned_data = super().clean()
-        password = cleaned_data.get("password")
-        re_password = cleaned_data.get("confirm_password")
 
-        # password validation
-        if password != re_password:
-            raise forms.ValidationError({"password": ["Passwords does not match"]})
+class LoginForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
+    remember_me = forms.BooleanField(required=False, widget=forms.CheckboxInput())
+
+    class Meta:
+        model = UserDetail
+        fields = ['email', 'password']
+
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+
+        placeholders = {
+            "email": "example@gmail.com",
+            "password": "*********",
+        }
+
+        for field_name, field in self.fields.items():
+            field.widget.attrs["placeholder"] = placeholders.get(field_name, "")
+            field.widget.attrs["class"] = "w-full p-2 border border-gray-300 rounded mt-1"
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if not UserDetail.objects.filter(email=email).exists():
+            raise forms.ValidationError("This Email does not exist.")
+        return email
