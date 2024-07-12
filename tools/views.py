@@ -16,18 +16,13 @@ def homepage(request):
 def signup(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
-        print(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Account created successfully!")
             return redirect("/")
-        else:
-            messages.error(request, "Please correct the errors below.")
     else:
         form = SignUpForm()
 
     return render(request, "signup.html", {"form": form})
-
 
 @login_required
 def submit_rating(request):

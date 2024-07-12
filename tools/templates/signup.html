@@ -4,14 +4,81 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>i-website Sign-Up</title>
+  <title>ai-website Sign-Up</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.querySelector('form');
+      const firstNameInput = form.querySelector('[name="first_name"]');
+      const lastNameInput = form.querySelector('[name="last_name"]');
+      const emailInput = form.querySelector('[name="email"]');
+      const passwordInput = form.querySelector('[name="password"]');
+      const confirmPasswordInput = form.querySelector('[name="confirm_password"]');
+
+      function showError(input, message) {
+        const errorDiv = input.parentElement.querySelector('.error-message');
+        errorDiv.textContent = message;
+      }
+
+      function clearError(input) {
+        const errorDiv = input.parentElement.querySelector('.error-message');
+        errorDiv.textContent = '';
+      }
+
+      function validateFirstName() {
+        if (firstNameInput.value.trim() === '') {
+          showError(firstNameInput, 'First name is required');
+        } else {
+          clearError(firstNameInput);
+        }
+      }
+
+      function validateLastName() {
+        if (lastNameInput.value.trim() === '') {
+          showError(lastNameInput, 'Last name is required');
+        } else {
+          clearError(lastNameInput);
+        }
+      }
+
+      function validateEmail() {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(emailInput.value.trim())) {
+          showError(emailInput, 'Invalid email address');
+        } else {
+          clearError(emailInput);
+        }
+      }
+
+      function validatePassword() {
+        if (passwordInput.value.length < 5) {
+          showError(passwordInput, 'Password must be at least 5 characters');
+        } else {
+          clearError(passwordInput);
+        }
+      }
+
+      function validateConfirmPassword() {
+        if (confirmPasswordInput.value !== passwordInput.value) {
+          showError(confirmPasswordInput, 'Passwords do not match');
+        } else {
+          clearError(confirmPasswordInput);
+        }
+      }
+
+      firstNameInput.addEventListener('input', validateFirstName);
+      lastNameInput.addEventListener('input', validateLastName);
+      emailInput.addEventListener('input', validateEmail);
+      passwordInput.addEventListener('input', validatePassword);
+      confirmPasswordInput.addEventListener('input', validateConfirmPassword);
+    });
+  </script>
 </head>
 <body class="bg-gradient-to-r from-blue-500 to-purple-600">
   <div class="min-h-screen flex items-center justify-center">
     <div class="bg-white h-screen shadow-lg flex w-full overflow-hidden justify-center">
       <!-- Sign Up Form -->
-      <div class="w-1/2 p-8 justify-center align-center h-screen  flex flex-col">
+      <div class="w-1/2 p-8 justify-center align-center h-screen flex flex-col">
         <div class="flex fixed top-10 left-10">
           <a href="/"><h1 class="text-md font-bold ml-2">ai-website</h1></a>
         </div>
@@ -24,37 +91,47 @@
             <div class="flex space-x-4 mb-4">
               <div class="w-1/2">
                 <label class="block text-gray-700">First Name</label>
-                <input type="text" class="w-full p-2 border border-gray-300 rounded mt-1" placeholder="Bijoy">
+                {{ form.first_name }}
+                <div class="error-message text-red-500 text-sm mt-1"></div>
               </div>
               <div class="w-1/2">
                 <label class="block text-gray-700">Last Name</label>
-                <input type="text" class="w-full p-2 border border-gray-300 rounded mt-1" placeholder="Joseph">
+                {{ form.last_name }}
+                <div class="error-message text-red-500 text-sm mt-1"></div>
               </div>
             </div>
             <div class="mb-4">
               <label class="block text-gray-700">Email</label>
-              <input type="email" class="w-full p-2 border border-gray-300 rounded mt-1" placeholder="example@gmail.com">
-            </div>
-            <div class="mb-4">
-              <label class="block text-gray-700">Password</label>
-              <input type="password" class="w-full p-2 border border-gray-300 rounded mt-1" placeholder="*********">
-              <div class="text-sm text-gray-600 mt-1">
-                <p>✔ At least 5 characters</p>
-                <p>✔ One number</p>
+              {{ form.email }}
+              <div class="error-message text-red-500 text-sm mt-1">
+                {% if form.email.errors %}
+                  {% for error in form.email.errors %}
+                    <p>{{ error }}</p>
+                  {% endfor %}
+                {% endif %}
               </div>
             </div>
             <div class="mb-4">
-              <label class="block text-gray-700">Confirm password</label>
-              <input type="password" class="w-full p-2 border border-gray-300 rounded mt-1" placeholder="*********">
+              <label class="block text-gray-700">Password</label>
+              {{ form.password }}
+              <div class="text-sm text-gray-600 mt-1">
+                <p>✔ At least 5 characters</p>
+              </div>
+              <div class="error-message text-red-500 text-sm mt-1"></div>
             </div>
-            <button class="w-full bg-gray-400 text-white p-2 rounded mt-4">Continue with email</button>
+            <div class="mb-4">
+              <label class="block text-gray-700">Confirm password</label>
+              {{ form.confirm_password }}
+              <div class="error-message text-red-500 text-sm mt-1"></div>
+            </div>
+            <button type="submit" class="w-full bg-gray-400 text-white p-2 rounded mt-4">Continue with email</button>
             <button class="w-full bg-white text-gray-700 border border-gray-300 p-2 rounded mt-2 flex items-center justify-center">
               <img src="https://www.google.com/favicon.ico" class="w-5 h-5 mr-2"> Continue with Google
             </button>
           </form>
           <p class="text-gray-600 text-sm mt-4">By signing up you agree to the <a href="#" class="text-blue-500">Terms of Service</a> & <a href="#" class="text-blue-500">Privacy Policy</a></p>
           <p class="text-gray-600 text-sm mt-2">Already have an account? <a href="#" class="text-blue-500">Log in</a></p>
-          </div>
+        </div>
       </div>
       <!-- Testimonial -->
       <div class="w-1/2 bg-gradient-to-r from-blue-500 to-purple-600 text-white p-8 rounded-r-lg flex items-center justify-center">

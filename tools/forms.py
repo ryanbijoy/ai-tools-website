@@ -1,10 +1,9 @@
 from django import forms
-from django.contrib.auth import password_validation
 from .models import UserDetail
 
 
 class SignUpForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
+    password = forms.CharField(widget=forms.PasswordInput, min_length=5)
     confirm_password = forms.CharField(widget=forms.PasswordInput)
 
     class Meta:
@@ -15,16 +14,22 @@ class SignUpForm(forms.ModelForm):
         super(SignUpForm, self).__init__(*args, **kwargs)
 
         placeholders = {
-            "first_name": "Enter First Name",
-            "last_name": "Enter Last Name",
-            "email": "Enter Email",
-            "password": "Enter Password",
-            "confirm_password": "Enter Confirm Password Again",
+            "first_name": "Bijoy",
+            "last_name": "Joseph",
+            "email": "example@gmail.com",
+            "password": "*********",
+            "confirm_password": "*********",
         }
 
         for field_name, field in self.fields.items():
             field.widget.attrs["placeholder"] = placeholders.get(field_name, "")
-            field.widget.attrs["class"] = "form-control"
+            field.widget.attrs["class"] = "w-full p-2 border border-gray-300 rounded mt-1"
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if UserDetail.objects.filter(email=email).exists():
+            raise forms.ValidationError("This Email already exists.")
+        return email
 
     def clean(self):
         cleaned_data = super().clean()
@@ -34,10 +39,3 @@ class SignUpForm(forms.ModelForm):
         # password validation
         if password != re_password:
             raise forms.ValidationError({"password": ["Passwords does not match"]})
-
-        if password is None:
-            raise forms.ValidationError({"password": ["Password can't be empty"]})
-        try:
-            password_validation.validate_password(password=password)
-        except forms.ValidationError as error:
-            raise forms.ValidationError({"password": error})
