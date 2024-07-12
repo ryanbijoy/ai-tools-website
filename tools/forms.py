@@ -32,13 +32,10 @@ class SignUpForm(forms.ModelForm):
         return email
 
 
-class LoginForm(forms.ModelForm):
+class LoginForm(forms.Form):
+    email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
     remember_me = forms.BooleanField(required=False, widget=forms.CheckboxInput())
-
-    class Meta:
-        model = UserDetail
-        fields = ['email', 'password']
 
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)

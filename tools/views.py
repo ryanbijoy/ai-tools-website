@@ -15,6 +15,9 @@ def homepage(request):
 
 
 def signup(request):
+    if request.user and request.user.is_authenticated:
+        return redirect("/")
+
     if request.method == "POST":
         form = SignUpForm(request.POST)
         if form.is_valid():
@@ -27,6 +30,9 @@ def signup(request):
 
 
 def user_login(request):
+    if request.user and request.user.is_authenticated:
+        return redirect("/")
+
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -42,8 +48,6 @@ def user_login(request):
                 return redirect('home')
             else:
                 messages.error(request, "Invalid email or password.")
-        else:
-            messages.error(request, "Please correct the errors below.")
     else:
         form = LoginForm()
 

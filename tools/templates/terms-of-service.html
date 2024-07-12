@@ -4,5 +4,45 @@
 {% block content %}
 
 
+<br><br><br>
+    <title>HeyGen Terms of Service</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-purple-100 text-gray-800">
+    <div class="max-w-4xl mx-auto py-16 px-8">
+        <div class="flex space-x-8 mb-8">
+            <a href="{% url 'terms_of_service' %}"><button class="bg-white text-purple-700 font-semibold py-2 px-4 rounded-full shadow">Terms of Service</button></a>
+            <a href="{% url 'privacy_policy' %}"><button class="text-gray-500 py-2 px-4">Privacy Policy</button></a>
+        </div>
+        <div>
+            <h1 class="text-4xl font-bold text-gray-900">AI-website Terms of Service</h1>
+            <p class="text-gray-600">Effective as of 20 of November 2023</p>
+        </div>
+        <div class="mt-8">
+            <h2 class="text-2xl font-bold text-gray-900">General</h2>
+            <p class="mt-4">
+                By accessing and using HeyGen’s application programming interfaces, software, tools, data, documentation, or website (collectively, “Services”), you expressly agree that you have read and agreed to be bound by the following terms and conditions (the “Terms”) as well as all applicable laws and regulations. You also agree that you are 18 years or older and legally able to enter into a binding contract.
+            </p>
+            <p class="mt-4">
+                Unless otherwise specified, terms used below and in any of our other agreements or notices, including our Privacy Policy, have the following meanings:
+            </p>
+            <ul class="list-disc list-inside mt-4 space-y-2">
+                <li>“Client”, “User”, “You” and “Your” refers to you, the person using Services and accepting the Terms.</li>
+                <li>“HeyGen”, “Ourselves”, “Our”, “We” and “Us”, refer to our company, HeyGen, Inc.</li>
+                <li>“Representatives” means HeyGen’s personnel, advisors, affiliates, agents and suppliers.</li>
+                <li>“Party”, “Parties”, or, refers to both the Client and ourselves, or either the Client or ourselves.</li>
+            </ul>
+            <p class="mt-4">
+                Any use of the above terminology or other words in singular, plural, capitalization, and/or he/she or they are taken as interchangeable and, therefore, as referring to the same.
+            </p>
+            <p class="mt-4">
+                These Terms and any policies incorporated in these Terms contain the entire agreement between you and HeyGen.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+
+
 
 {% endblock %}
