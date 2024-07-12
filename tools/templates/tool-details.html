@@ -8,8 +8,8 @@
   <nav class="breadcrumbs">
     <div class="container">
       <ol>
-        <li><a href="index.html">Home</a></li>
-        <li class="current">Service Details</li>
+        <li><a href="/">Home</a></li>
+        <li class="current">Tool Details</li>
       </ol>
     </div>
   </nav>
@@ -23,8 +23,8 @@
               <div class="service-box">
                   <h4>ChatGPT</h4>
                   <div class="services-list">
-                      <a href="#" class="active" data-target="about"><i class="bi bi-arrow-right-circle"></i><span>About</span></a>
-                      <a href="#" data-target="how-to-use"><i class="bi bi-arrow-right-circle"></i><span>How to Use</span></a>
+                      <a href="#" class="active" data-target="about-content"><i class="bi bi-arrow-right-circle"></i><span>About</span></a>
+                      <a href="#" data-target="pricing-content"><i class="bi bi-arrow-right-circle"></i><span>Pricing Plans</span></a>
                       <!-- Add more AI tools as needed -->
                   </div>
               </div><!-- End Services List -->
@@ -32,7 +32,7 @@
               <div class="service-box">
                   <h4>Give a Rating</h4>
                   <div class="download-catalog">
-                      <a href="#">
+                      <a>
                         <div class="star-rating">
                             <input type="radio" id="5-stars" name="rating" value="5">
                             <label for="5-stars" class="star">&#9733;</label>
@@ -45,7 +45,6 @@
                             <input type="radio" id="1-star" name="rating" value="1">
                             <label for="1-star" class="star">&#9733;</label>
                         </div>
-
                       </a>
                   </div>
               </div><!-- End Services List -->
@@ -53,8 +52,8 @@
 
           <div class="col-lg-8 ps-lg-5" data-aos="fade-up" data-aos-delay="200">
               <div class="service-content" id="about-content">
-                  <img src="assets/img/about.jpg" alt="ChatGPT" class="img-fluid services-img">
-                  <h3>About ChatGPT</h3>
+                  <img src="{% static 'img/about.jpg' %}" class="img-fluid services-img">
+                  <h3>About GPT</h3>
                   <p>
                       ChatGPT is a conversational AI developed by OpenAI. It can understand and generate human-like text based on the input it receives, making it useful for a wide range of applications including customer support, virtual assistants, and content creation.
                   </p>
@@ -71,27 +70,49 @@
                   </p>
               </div>
 
-              <div class="service-content" id="how-to-use-content" style="display: none;">
-                  <img src="assets/img/how-to-use.jpg" alt="ChatGPT How to Use" class="img-fluid services-img">
-                  <h3>How to Use ChatGPT</h3>
+              <div class="service-content" id="pricing-content" style="display: none;">
+                  <img src="assets/img/pricing.jpg" alt="ChatGPT Pricing" class="img-fluid services-img">
+                  <h3>Pricing Plans</h3>
                   <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin semper, nisi nec varius condimentum, ligula risus consectetur leo, vel malesuada libero risus ut est.
+                      ChatGPT offers a variety of pricing plans to suit different needs and budgets. Choose the plan that best fits your requirements and start leveraging the power of conversational AI today.
                   </p>
                   <ul>
-                      <li><i class="bi bi-check-circle"></i> <span>Step 1: Lorem ipsum dolor sit amet.</span></li>
-                      <li><i class="bi bi-check-circle"></i> <span>Step 2: Consectetur adipiscing elit.</span></li>
-                      <li><i class="bi bi-check-circle"></i> <span>Step 3: Proin semper, nisi nec varius condimentum.</span></li>
+                      <li><i class="bi bi-check-circle"></i> <span>Basic Plan: $10/month</span></li>
+                      <li><i class="bi bi-check-circle"></i> <span>Pro Plan: $30/month</span></li>
+                      <li><i class="bi bi-check-circle"></i> <span>Enterprise Plan: Contact us for pricing</span></li>
                   </ul>
                   <p>
-                      Integer vestibulum mi vitae nisi fermentum, nec maximus nisi tristique. Sed efficitur justo eu eros consequat, et placerat justo ullamcorper.
-                  </p>
-                  <p>
-                      In in turpis id ex pretium consequat vel in dolor. Suspendisse potenti. Donec sodales purus sit amet lacus vulputate interdum.
+                      Each plan comes with a set of features tailored to different usage levels, ensuring you get the best value for your investment.
                   </p>
               </div>
           </div>
       </div>
   </div>
 </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const links = document.querySelectorAll('.services-list a');
+      const contents = document.querySelectorAll('.service-content');
+
+      links.forEach(link => {
+          link.addEventListener('click', function(e) {
+              e.preventDefault();
+              const target = this.getAttribute('data-target');
+
+              // Remove active class from all links
+              links.forEach(link => link.classList.remove('active'));
+              // Add active class to clicked link
+              this.classList.add('active');
+
+              // Hide all contents
+              contents.forEach(content => content.style.display = 'none');
+              // Show the target content
+              document.getElementById(target).style.display = 'block';
+          });
+      });
+  });
+</script>
+
 
 {% endblock %}

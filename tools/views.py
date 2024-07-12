@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect
-from .forms import SignUpForm, ToolRatingForm
-from django.contrib import messages
-from .models import AiTool
+from .forms import SignUpForm
+from .models import AiTool, ToolRating
 from django.contrib.auth.decorators import login_required
-# Create your views here.
+from django.contrib import messages
 
 
 def homepage(request):
@@ -17,9 +16,13 @@ def homepage(request):
 def signup(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
+        print(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("home")  # Replace with your desired redirect URL name
+            messages.success(request, "Account created successfully!")
+            return redirect("/")
+        else:
+            messages.error(request, "Please correct the errors below.")
     else:
         form = SignUpForm()
 
@@ -28,14 +31,11 @@ def signup(request):
 
 @login_required
 def submit_rating(request):
-    if request.method == 'POST':
-        form = ToolRatingForm(request.POST)
-        if form.is_valid():
-            rating = form.save(commit=False)
-            rating.user = request.user
-            rating.save()
-            messages.success(request, 'Thank you for your rating!')
-            return redirect('/')
-    else:
-        form = ToolRatingForm()
-    return render(request, 'tool-details.html', {'form': form})
+    email = request.user.email
+    ai_tool = request.POST.get('ai_tool')
+    star_rating = request.POST.get('star_rating')
+
+    if request.method == "POST":
+        ToolRating.objects.create(email=email, ai_tool=ai_tool, rating=star_rating)
+
+    return render(request, 'tool-details.html')

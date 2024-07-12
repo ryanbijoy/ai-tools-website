@@ -3,95 +3,94 @@
 {% block title %}Create Account{% endblock %}
 {% block content %}
 
-  <section id="hero" class="hero section">
-    <div class="container">
-      <div class="row gy-4 justify-content-center">
-        <div class="col-lg-8 text-center">
-          <h1 data-aos="fade-up">Explore all the AI tools essential for your category here</h1>
-          <p data-aos="fade-up" data-aos-delay="100">We are a team of talented designers making websites with Bootstrap</p>
-          <form method="POST">
-              {% csrf_token %}
-              <div class="d-flex justify-content-center mt-3" data-aos="fade-up" data-aos-delay="200">
-                <input class="form-control me-2" name="prompt" placeholder="Enter Your Prompt..">
-                <a type="submit" class="btn-get-started">Search <i class="bi bi-arrow-right"></i></a>
-              </div>
-          </form>
-        </div>
-      </div>
+<section id="hero" class="hero section">
+<div class="container">
+  <div class="row gy-4 justify-content-center">
+    <div class="col-lg-8 text-center">
+      <h1 data-aos="fade-up">Explore all the AI tools essential for your category here</h1>
+      <p data-aos="fade-up" data-aos-delay="100">We are a team of talented designers making websites with Bootstrap</p>
+      <form method="POST">
+          {% csrf_token %}
+          <div class="d-flex justify-content-center mt-3" data-aos="fade-up" data-aos-delay="200">
+            <input class="form-control me-2" name="prompt" placeholder="Enter Your Prompt..">
+            <a type="submit" class="btn-get-started">Search <i class="bi bi-arrow-right"></i></a>
+          </div>
+      </form>
     </div>
-  </section><!-- /Hero Section -->
+  </div>
+</div>
+</section><!-- /Hero Section -->
 </main>
 
 <section id="about" class="about section">
-    <div class="container" data-aos="fade-up">
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 justify-content-center">
+<div class="container" data-aos="fade-up">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 justify-content-center">
 
-            {% for ai_tool in ai_tools %}
-            <div class="col mb-4">
-                <div class="content text-center py-3 d-flex flex-column h-100">
-                    <div class="testimonial-item">
-                        <div class="stars mb-2">
-                            <i class="bi bi-star-fill text-warning"></i>
-                            <i class="bi bi-star-fill text-warning"></i>
-                            <i class="bi bi-star-fill text-warning"></i>
-                            <i class="bi bi-star-fill text-warning"></i>
-                            <i class="bi bi-star-fill text-warning"></i>
-                        </div>
-                    </div>
-
-                    <img src="{% static ai_tool.logo %}" class="img-fluid mb-2" alt="">
-                    <h3>{{ ai_tool.type }}</h3>
-                    <h2>{{ ai_tool.ai_tool }}</h2>
-                    <p>{{ ai_tool.description }}</p>
-                    <div class="mt-auto">
-                        <a href="{{ ai_tool.website_url }}" target="_blank" class="btn-read-more d-inline-flex align-items-center justify-content-center">
-                            <span>Visit Site</span>
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
+        {% for ai_tool in ai_tools %}
+        <div class="col mb-4">
+            <div class="content text-center py-3 d-flex flex-column h-100">
+                <div class="testimonial-item">
+                    <div class="stars mb-2">
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
                     </div>
                 </div>
-            </div>
-            {% endfor %}
 
+                <a href="/tool-details"><img src="{% static ai_tool.logo %}" class="img-fluid mb-2" alt=""></a>
+                <h3>{{ ai_tool.type }}</h3>
+                <a href="/tool-details"><h2>{{ ai_tool.ai_tool }}</h2></a>
+                <p>{{ ai_tool.description }}</p>
+                <div class="mt-auto">
+                    <a href="{{ ai_tool.website_url }}" target="_blank" class="btn-read-more d-inline-flex align-items-center justify-content-center">
+                        <span>Visit Site</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
         </div>
+        {% endfor %}
+
     </div>
+</div>
 </section>
 
 
-
-    <section id="contact" class="contact section">
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Suggestions</h2>
-        <p>Send Us Your Suggestions</p>
-      </div>
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <div class="row justify-content-center gy-4">
-          <div class="col-lg-6">
-            <form action="#" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
-              {% csrf_token %}
-              <div class="row gy-4">
-                <div class="col-md-6">
-                  <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
-                </div>
-                <div class="col-md-6">
-                  <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
-                </div>
-                <div class="col-md-12">
-                  <input type="text" class="form-control" name="subject" placeholder="Subject" required="">
-                </div>
-                <div class="col-md-12">
-                  <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
-                </div>
-                <div class="col-md-12 text-center">
-                  <div class="loading">Loading</div>
-                  <div class="error-message"></div>
-                  <div class="sent-message">Your message has been sent. Thank you!</div>
-                  <button type="submit">Send Message</button>
-                </div>
-              </div>
-            </form>
+<section id="contact" class="contact section">
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Suggestions</h2>
+    <p>Send Us Your Suggestions</p>
+  </div>
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row justify-content-center gy-4">
+      <div class="col-lg-6">
+        <form action="#" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+          {% csrf_token %}
+          <div class="row gy-4">
+            <div class="col-md-6">
+              <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
+            </div>
+            <div class="col-md-6">
+              <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
+            </div>
+            <div class="col-md-12">
+              <input type="text" class="form-control" name="subject" placeholder="Subject" required="">
+            </div>
+            <div class="col-md-12">
+              <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
+            </div>
+            <div class="col-md-12 text-center">
+              <div class="loading">Loading</div>
+              <div class="error-message"></div>
+              <div class="sent-message">Your message has been sent. Thank you!</div>
+              <button type="submit">Send Message</button>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 {% endblock %}
