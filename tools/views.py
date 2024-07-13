@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import SignUpForm, LoginForm
 from .models import AiTool, ToolRating
+from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -44,8 +45,8 @@ def user_login(request):
             if user is not None:
                 login(request, user)
                 if not remember_me:
-                    request.session.set_expiry(0)  # Session expires on browser close
-                return redirect('home')
+                    request.session.set_expiry(0)
+                return redirect('/')
             else:
                 messages.error(request, "Invalid email or password.")
     else:
@@ -54,16 +55,25 @@ def user_login(request):
     return render(request, "login.html", {"form": form})
 
 
-@login_required
 def submit_rating(request):
-    email = request.user.email
     ai_tool = request.POST.get('ai_tool')
-    star_rating = request.POST.get('star_rating')
-
     if request.method == "POST":
-        ToolRating.objects.create(email=email, ai_tool=ai_tool, rating=star_rating)
+        email = request.user.email
+        ai_tool = request.POST.get('ai_tool')
+        remember_me = request.POST.get('remember_me')
 
-    return render(request, 'tool-details.html')
+        existing_rating = ToolRating.objects.filter(email=email, ai_tool=ai_tool).first()
+        if existing_rating:
+            return JsonResponse({'error': 'You have already voted.'})
+
+        star_rating = request.POST.get('star_rating')
+        ToolRating.objects.create(email=email, ai_tool=ai_tool, star_rating=star_rating)
+
+        total_votes = ToolRating.objects.filter(ai_tool=ai_tool).count()
+        return JsonResponse({'success': True, "total_votes": total_votes})
+
+    total_votes = ToolRating.objects.filter(ai_tool=ai_tool).count()
+    return render(request, 'tool-details.html', {"total_votes": total_votes})
 
 
 def terms_of_service(request):

@@ -1672,3 +1672,16 @@ section,
 .star-rating label {
     margin: 0 5px; /* Add spacing between stars */
 }
+
+.message {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.green-message {
+    color: green;
+}
+
+.red-message {
+    color: red;
+}

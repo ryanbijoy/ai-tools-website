@@ -21,6 +21,9 @@ class ToolRating(models.Model):
     ai_tool = models.CharField(max_length=15)
     star_rating = models.IntegerField()
 
+    def __str__(self):
+        return f'{self.email} - {self.ai_tool} - {self.star_rating}'
+
 
 class AiTool(models.Model):
     ai_tool = models.CharField(max_length=25)
