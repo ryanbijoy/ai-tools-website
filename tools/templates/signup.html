@@ -125,10 +125,11 @@
               <div class="error-message text-red-500 text-sm mt-1"></div>
             </div>
             <button type="submit" class="w-full bg-gray-400 text-white p-2 rounded mt-4">Continue with email</button>
-            <button class="w-full bg-white text-gray-700 border border-gray-300 p-2 rounded mt-2 flex items-center justify-center">
-              <img src="https://www.google.com/favicon.ico" class="w-5 h-5 mr-2"> Continue with Google
-            </button>
           </form>
+            {% load socialaccount %}
+            <a href="{% provider_login_url 'google'%}?next=/"><button class="w-full bg-white text-gray-700 border border-gray-300 p-2 rounded mt-2 flex items-center justify-center">
+              <img src="https://www.google.com/favicon.ico" class="w-5 h-5 mr-2"> Continue with Google
+            </button></a>
           <p class="text-gray-600 text-sm mt-4">By signing up you agree to the <a href="{% url 'terms_of_service' %}" class="text-blue-500">Terms of Service</a> & <a href="{% url 'privacy_policy' %}" class="text-blue-500">Privacy Policy</a></p>
           <p class="text-gray-600 text-sm mt-2">Already have an account? <a href="{% url 'login' %}" class="text-blue-500">Log in</a></p>
         </div>

@@ -48,10 +48,11 @@
               <label for="remember_me" class="text-gray-700">Remember me</label>
             </div>
             <button type="submit" class="w-full bg-gray-400 text-white p-2 rounded mt-4">Sign in</button>
-            <button class="w-full bg-white text-gray-700 border border-gray-300 p-2 rounded mt-2 flex items-center justify-center">
-              <img src="https://www.google.com/favicon.ico" class="w-5 h-5 mr-2"> Continue with Google
-            </button>
           </form>
+            {% load socialaccount %}
+            <a href="{% provider_login_url 'google'%}?next=/"><button class="w-full bg-white text-gray-700 border border-gray-300 p-2 rounded mt-2 flex items-center justify-center">
+              <img src="https://www.google.com/favicon.ico" class="w-5 h-5 mr-2"> Continue with Google
+            </button></a>
           <p class="text-gray-600 text-sm mt-4"><a href="#" class="text-blue-500">Forgot password?</a></p>
           <p class="text-gray-600 text-sm mt-2">Don't have an account? <a href="{% url 'signup' %}" class="text-blue-500">Sign up</a></p>
         </div>
