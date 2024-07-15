@@ -4,8 +4,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ai-website Sign-Up</title>
+  <title>ai-website Reset Password</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script>
+  function showForgotPassword() {
+    document.getElementById('login-form').style.display = 'none';
+    document.getElementById('forgot-password-form').style.display = 'block';
+    document.getElementById('verify-email-form').style.display = 'none'; // hide verification form if shown
+  }
+  function showLoginForm() {
+    document.getElementById('login-form').style.display = 'block';
+    document.getElementById('forgot-password-form').style.display = 'none';
+    document.getElementById('verify-email-form').style.display = 'none'; // hide verification form if shown
+  }
+  function showVerifyEmail() {
+    document.getElementById('forgot-password-form').style.display = 'none';
+    document.getElementById('verify-email-form').style.display = 'block';
+  }
+  </script>
 </head>
 <body class="bg-gradient-to-r from-blue-500 to-purple-600">
   <div class="min-h-screen flex items-center justify-center">
@@ -15,7 +31,8 @@
         <div class="flex fixed top-10 left-10">
           <a href="/"><h1 class="text-md font-bold ml-2">ai-website</h1></a>
         </div>
-        <div class="flex flex-col max-w-md mx-auto mb-8">
+
+        <div id="login-form" class="flex flex-col max-w-md mx-auto mb-8">
           <br><br><br>
           <h2 class="text-2xl font-bold mb-4">Log in to your account</h2>
           <p class="text-gray-600 mb-6">Welcome back! Enter your credentials to access your account</p>
@@ -49,15 +66,43 @@
             </div>
             <button type="submit" class="w-full bg-gray-400 text-white p-2 rounded mt-4">Sign in</button>
           </form>
-            {% load socialaccount %}
-            <a href="{% provider_login_url 'google'%}?next=/"><button class="w-full bg-white text-gray-700 border border-gray-300 p-2 rounded mt-2 flex items-center justify-center">
-              <img src="https://www.google.com/favicon.ico" class="w-5 h-5 mr-2"> Continue with Google
-            </button></a>
-          <p class="text-gray-600 text-sm mt-4"><a href="#" class="text-blue-500">Forgot password?</a></p>
+          {% load socialaccount %}
+          <a href="{% provider_login_url 'google'%}?next=/"><button class="w-full bg-white text-gray-700 border border-gray-300 p-2 rounded mt-2 flex items-center justify-center">
+            <img src="https://www.google.com/favicon.ico" class="w-5 h-5 mr-2"> Continue with Google
+          </button></a>
+          <p class="text-gray-600 text-sm mt-4"><a href="javascript:void(0);" class="text-blue-500" onclick="showForgotPassword()">Forgot password?</a></p>
           <p class="text-gray-600 text-sm mt-2">Don't have an account? <a href="{% url 'signup' %}" class="text-blue-500">Sign up</a></p>
         </div>
-      </div>
 
+        <div id="forgot-password-form" class="flex flex-col max-w-md mx-auto mb-8" style="display: none;">
+          <br><br><br>
+          <h2 class="text-2xl font-bold mb-4">Reset password</h2>
+          <p class="text-gray-600 mb-6">Enter the email address associated with your account, and we'll email you a link to reset your password.</p>
+          <form method="POST" action="" onsubmit="showVerifyEmail(); return false;">
+            {% csrf_token %}
+            <div class="mb-4">
+              <label class="block text-gray-700">Email</label>
+              {{ form.email }}
+              <div class="error-message text-red-500 text-sm mt-1">
+                {% if form.email.errors %}
+                  {% for error in form.email.errors %}
+                    <p>{{ error }}</p>
+                  {% endfor %}
+                {% endif %}
+              </div>
+            </div>
+            <button type="submit" class="w-full bg-gray-400 text-white p-2 rounded mt-4">Reset Password</button>
+          </form>
+          <p class="text-gray-600 text-sm mt-4"><a href="javascript:void(0);" class="text-blue-500" onclick="showLoginForm()">Back to Login</a></p>
+        </div>
+
+        <div id="verify-email-form" class="flex flex-col max-w-md mx-auto mb-8" style="display: none;">
+          <br><br><br>
+          <h2 class="text-2xl font-bold mb-4">Let's verify your email</h2>
+          <p class="text-gray-600 mb-6">We have sent a verification email to. Please check your inbox to get started.</p>
+          <button class="w-full bg-gray-400 text-white p-2 rounded mt-4" onclick="showLoginForm()">Close</button>
+        </div>
+      </div>
 
       <div class="w-1/2 bg-gradient-to-r from-blue-500 to-purple-600 text-white p-8 rounded-r-lg flex items-center justify-center">
         <div class="max-w-md mx-auto bg-black bg-opacity-30 p-6 rounded-lg">

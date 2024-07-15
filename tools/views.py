@@ -1,10 +1,17 @@
 from django.shortcuts import render, redirect
 from .forms import SignUpForm, LoginForm
-from .models import AiTool, ToolRating
+from .models import AiTool, ToolRating, UserDetail
 from django.http import JsonResponse
 from django.contrib import messages
+from django.http import HttpResponse
+from django.core.mail import EmailMessage
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.shortcuts import get_object_or_404
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from .token import account_activation_token
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
 
 
 def homepage(request):
@@ -22,12 +29,44 @@ def signup(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect("/")
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
+
+            current_site = get_current_site(request)
+            mail_subject = 'Activation link has been sent to your email id'
+            message = render_to_string('email-verification.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            })
+            to_email = form.cleaned_data.get('email')
+            email = EmailMessage(
+                        mail_subject, message, to=[to_email]
+            )
+            email.send()
+            return HttpResponse('Please confirm your email address to complete the registration')
+
     else:
         form = SignUpForm()
 
     return render(request, "signup.html", {"form": form})
+
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = get_object_or_404(UserDetail, pk=uid)
+    except(TypeError, ValueError, OverflowError, UserDetail.DoesNotExist):
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+    else:
+        return HttpResponse('Activation link is invalid!')
 
 
 def user_login(request):

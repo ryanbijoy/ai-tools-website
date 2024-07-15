@@ -8,6 +8,7 @@ class UserDetail(models.Model):
     last_name = models.CharField(max_length=30)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=128)
+    is_active = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
