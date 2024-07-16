@@ -12,6 +12,9 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from .token import account_activation_token
 from django.contrib.auth import authenticate, login
+from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.messages.views import SuccessMessageMixin
 
 
 def homepage(request):
@@ -104,6 +107,18 @@ def user_login(request):
         form = LoginForm()
 
     return render(request, "login.html", {"form": form})
+
+
+class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
+    template_name = 'login.html'
+    email_template_name = 'forgot-password-template.html'
+    subject_template_name = 'Requested for password reset | Ai-website'
+    success_message = "Your password has been successfully changed, Thank You"
+    success_url = reverse_lazy('/')
+
+
+class PasswordResetConfirmView(SuccessMessageMixin, PasswordResetView):
+    template_name = 'password-reset-confirm.html'
 
 
 def submit_rating(request):
