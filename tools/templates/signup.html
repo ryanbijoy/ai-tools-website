@@ -66,11 +66,25 @@
         }
       }
 
+      function showSignupForm() {
+          document.getElementById('signup-form').style.display = 'block';
+          document.getElementById('email-confirmation').style.display = 'none';
+      }
+
+      function showEmailConfirmation() {
+          document.getElementById('signup-form').style.display = 'none';
+          document.getElementById('email-confirmation').style.display = 'block';
+      }
+
       firstNameInput.addEventListener('input', validateFirstName);
       lastNameInput.addEventListener('input', validateLastName);
       emailInput.addEventListener('input', validateEmail);
       passwordInput.addEventListener('input', validatePassword);
       confirmPasswordInput.addEventListener('input', validateConfirmPassword);
+
+      {% if email_confirmation %}
+      showEmailConfirmation();
+      {% endif %}
     });
   </script>
 </head>
@@ -78,7 +92,7 @@
   <div class="min-h-screen flex items-center justify-center">
     <div class="bg-white h-screen shadow-lg flex w-full overflow-hidden justify-center">
       <!-- Sign Up Form -->
-      <div class="w-1/2 p-8 justify-center align-center h-screen flex flex-col">
+      <div id="signup-form" class="w-1/2 p-8 justify-center align-center h-screen flex flex-col">
         <div class="flex fixed top-10 left-10">
           <a href="/"><h1 class="text-md font-bold ml-2">ai-website</h1></a>
         </div>
@@ -127,14 +141,23 @@
             <button type="submit" class="w-full bg-gray-400 text-white p-2 rounded mt-4">Continue with email</button>
           </form>
             {% load socialaccount %}
-            <a href="{% provider_login_url 'google'%}?next=/"><button class="w-full bg-white text-gray-700 border border-gray-300 p-2 rounded mt-2 flex items-center justify-center">
+            <a href="{% provider_login_url 'google' %}?next=/"><button class="w-full bg-white text-gray-700 border border-gray-300 p-2 rounded mt-2 flex items-center justify-center">
               <img src="https://www.google.com/favicon.ico" class="w-5 h-5 mr-2"> Continue with Google
             </button></a>
           <p class="text-gray-600 text-sm mt-4">By signing up you agree to the <a href="{% url 'terms_of_service' %}" class="text-blue-500">Terms of Service</a> & <a href="{% url 'privacy_policy' %}" class="text-blue-500">Privacy Policy</a></p>
           <p class="text-gray-600 text-sm mt-2">Already have an account? <a href="{% url 'login' %}" class="text-blue-500">Log in</a></p>
         </div>
       </div>
-      <!-- Testimonial -->
+
+      <div id="email-confirmation" class="w-1/2 p-8 justify-center align-center h-screen flex flex-col" style="display: none;">
+        <div class="flex flex-col max-w-md mx-auto mb-8">
+          <br><br><br><br><br><br><br><br><br><br><br><br><br>
+          <h2 class="text-2xl font-bold mb-4">Let's verify your email</h2>
+          <p class="text-gray-600 mb-6">We have sent a verification email to {{ form.email.value }}. Please check your inbox to get started.</p>
+          <a href="{% url 'signup' %}"><button class="w-full bg-gray-400 text-white p-2 rounded mt-4">Close</button></a>
+        </div>
+      </div>
+
       <div class="w-1/2 bg-gradient-to-r from-blue-500 to-purple-600 text-white p-8 rounded-r-lg flex items-center justify-center">
         <div class="max-w-md mx-auto bg-black bg-opacity-30 p-6 rounded-lg">
           <div class="mb-4 flex">

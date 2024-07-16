@@ -8,6 +8,6 @@ urlpatterns = [
     path("tool-details/", views.submit_rating, name="tool_details"),
     path("terms-of-services/", views.terms_of_service, name="terms_of_service"),
     path("privacy-policy/", views.privacy_policy, name="privacy_policy"),
-    path('activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/',
-         views.activate, name='activate'),
+    path('activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/', views.activate,
+         name='activate'),
 ]

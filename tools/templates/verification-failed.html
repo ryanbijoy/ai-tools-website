@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Email Verification Failed</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9f9f9;
+        }
+        .container {
+            text-align: center;
+            position: relative;
+            top: -10vh;
+        }
+        .logo {
+            margin-bottom: 20px;
+        }
+        .circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: greyw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+        }
+        .crossmark {
+            font-size: 50px;
+        }
+        .message {
+            font-size: 24px;
+            margin-top: 10px;
+        }
+        .sub-message {
+            font-size: 16px;
+            color: gray;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+<!--            <img src="logo-url.png" alt="Synthflow Logo">-->
+        </div>
+        <div class="circle">
+            <div class="crossmark">❌</div>
+        </div>
+        <div class="message">Activation Failed!</div>
+        <div class="sub-message">The activation link is invalid or expired.</div>
+        <a href="/"><button class="w-1/6 bg-gray-600 text-white p-2 rounded mt-4">Back To Dashboard</button></a>
+    </div>
+</body>
+</html>

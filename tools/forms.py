@@ -33,7 +33,7 @@ class SignUpForm(forms.ModelForm):
 
 
 class LoginForm(forms.Form):
-    email = forms.EmailField()
+    email = forms.EmailField(widget=forms.EmailInput)
     password = forms.CharField(widget=forms.PasswordInput)
     remember_me = forms.BooleanField(required=False, widget=forms.CheckboxInput())
 
