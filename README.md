@@ -4,13 +4,13 @@ create a .env file in website dir
 and add these codes
 
 create db and add the info
-DEBUG=True
-SECRET_KEY="nc72n2nx27x27nx7bshbfwefbqi87*&&#@)&7174874139247"
-DB_DATABASE=
-DB_USER=
-DB_PASSWORD=
-DB_IP="127.0.0.1"
-DB_PORT=5432
+- DEBUG=True
+- SECRET_KEY="nc72n2nx27x27nx7bshbfwefbqi87*&&#@)&7174874139247"
+- DB_DATABASE=
+- DB_USER=
+- DB_PASSWORD=
+- DB_IP="127.0.0.1"
+- DB_PORT=5432
 
 
 1. Download the code.
