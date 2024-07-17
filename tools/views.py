@@ -109,18 +109,6 @@ def user_login(request):
     return render(request, "login.html", {"form": form})
 
 
-class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
-    template_name = 'login.html'
-    email_template_name = 'forgot-password-template.html'
-    subject_template_name = 'Requested for password reset | Ai-website'
-    success_message = "Your password has been successfully changed, Thank You"
-    success_url = reverse_lazy('/')
-
-
-class PasswordResetConfirmView(SuccessMessageMixin, PasswordResetView):
-    template_name = 'password-reset-confirm.html'
-
-
 def submit_rating(request):
     ai_tool = request.POST.get('ai_tool')
     if request.method == "POST":
