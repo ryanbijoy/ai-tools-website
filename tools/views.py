@@ -12,9 +12,6 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from .token import account_activation_token
 from django.contrib.auth import authenticate, login
-from django.urls import reverse_lazy
-from django.contrib.auth.views import PasswordResetView
-from django.contrib.messages.views import SuccessMessageMixin
 
 
 def homepage(request):
