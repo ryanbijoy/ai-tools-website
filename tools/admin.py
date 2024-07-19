@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AiTool, ToolRating, UserDetail
+from .models import AiTool, ToolRating
 from import_export.admin import ImportExportModelAdmin
 
 
@@ -17,9 +17,4 @@ class AiToolAdmin(ImportExportModelAdmin):
 
 @admin.register(ToolRating)
 class ToolRatingAdmin(admin.ModelAdmin):
-    list_display = ('email', 'ai_tool', 'star_rating')
-
-
-@admin.register(UserDetail)
-class UserDetailTable(admin.ModelAdmin):
-    list_display = ("first_name", "last_name", "email", "password")
+    list_display = ('user', 'ai_tool', 'star_rating')

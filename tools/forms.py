@@ -1,5 +1,5 @@
 from django import forms
-from .models import UserDetail
+from django.contrib.auth.models import User
 
 
 class SignUpForm(forms.ModelForm):
@@ -7,7 +7,7 @@ class SignUpForm(forms.ModelForm):
     confirm_password = forms.CharField(widget=forms.PasswordInput)
 
     class Meta:
-        model = UserDetail
+        model = User
         fields = ['first_name', 'last_name', 'email', 'password', 'confirm_password']
 
     def __init__(self, *args, **kwargs):
@@ -27,9 +27,9 @@ class SignUpForm(forms.ModelForm):
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if UserDetail.objects.filter(email=email).exists():
+        if User.objects.filter(email=email.lower()).exists():
             raise forms.ValidationError("This Email already exists.")
-        return email
+        return email.lower()
 
 
 class LoginForm(forms.Form):
@@ -51,6 +51,6 @@ class LoginForm(forms.Form):
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if not UserDetail.objects.filter(email=email).exists():
+        if not User.objects.filter(email=email.lower()).exists():
             raise forms.ValidationError("This Email does not exist.")
-        return email
+        return email.lower()

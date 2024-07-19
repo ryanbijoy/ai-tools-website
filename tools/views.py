@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from .forms import SignUpForm, LoginForm
-from .models import AiTool, ToolRating, UserDetail
+from .models import AiTool, ToolRating
+from django.contrib.auth.models import User as UserDetail
 from django.http import JsonResponse
-from django.contrib import messages
 from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -11,6 +11,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from .token import account_activation_token
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 
 
@@ -29,7 +30,12 @@ def signup(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
+            user = UserDetail.objects.create_user(
+                username=form.cleaned_data["email"],
+                email=form.cleaned_data["email"],
+                password=form.cleaned_data["password"],
+            )
+
             user.is_active = False
             user.save()
 
@@ -42,18 +48,14 @@ def signup(request):
                 'token': account_activation_token.make_token(user),
             }
 
-            # Render HTML content
             html_content = render_to_string('email-verification.html', context)
-            # Create plain text content by stripping HTML tags
             text_content = strip_tags(html_content)
 
-            # Create the email
             email = EmailMultiAlternatives(
                 subject=mail_subject, body=text_content, to=[form.cleaned_data.get('email')]
             )
             email.attach_alternative(html_content, "text/html")
 
-            # Send the email
             email.send()
 
             return render(request, "signup.html", {"form": form, "email_confirmation": True})
@@ -110,19 +112,20 @@ def user_login(request):
     return render(request, "login.html", {"form": form})
 
 
+@login_required(login_url="/login")
 def submit_rating(request):
     ai_tool = request.POST.get('ai_tool')
+
     if request.method == "POST":
-        email = request.user.email
-        ai_tool = request.POST.get('ai_tool')
-        remember_me = request.POST.get('remember_me')
-
-        existing_rating = ToolRating.objects.filter(email=email, ai_tool=ai_tool).first()
-        if existing_rating:
-            return JsonResponse({'error': 'You have already voted.'})
-
         star_rating = request.POST.get('star_rating')
-        ToolRating.objects.create(email=email, ai_tool=ai_tool, star_rating=star_rating)
+        ai_tool = request.POST.get('ai_tool')
+        update_rating = ToolRating.objects.update_or_create(
+            user = request.user,
+            ai_tool = ai_tool,
+            defaults = {
+                "star_rating": star_rating
+            }
+        )
 
         total_votes = ToolRating.objects.filter(ai_tool=ai_tool).count()
         return JsonResponse({'success': True, "total_votes": total_votes})

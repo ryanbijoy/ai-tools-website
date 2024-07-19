@@ -1,29 +1,17 @@
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
-
-
-# Create your models here.
-class UserDetail(models.Model):
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=128)
-    is_active = models.BooleanField(default=False)
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
-
-    def __str__(self):
-        return self.email
+from django.contrib.auth.models import User
 
 
 class ToolRating(models.Model):
-    email = models.EmailField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
     ai_tool = models.CharField(max_length=15)
     star_rating = models.IntegerField()
 
     def __str__(self):
-        return f'{self.email} - {self.ai_tool} - {self.star_rating}'
+        try:
+            return f'{self.user.email} - {self.ai_tool} - {self.star_rating}'
+        except:
+            return ""
 
 
 class AiTool(models.Model):
