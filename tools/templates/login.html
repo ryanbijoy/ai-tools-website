@@ -36,21 +36,33 @@
           <br><br><br>
           <h2 class="text-2xl font-bold mb-4">Log in to your account</h2>
           <p class="text-gray-600 mb-6">Welcome back! Enter your credentials to access your account</p>
-          <form method="POST" action="">
+          <form method="POST">
             {% csrf_token %}
+            {{ form.non_field_errors }}
+
             <div class="mb-4">
-              <label class="block text-gray-700">Email</label>
+              <label for="email" class="block text-gray-700">Email</label>
               {{ form.email }}
+              <div class="error-message text-red-500 text-sm mt-1">
+              {{ form.email.errors }}
+              </div>
             </div>
+
             <div class="mb-4">
-              <label class="block text-gray-700">Password</label>
+              <label for="password" class="block text-gray-700">Password</label>
               {{ form.password }}
+              <div class="error-message text-red-500 text-sm mt-1">
+              {{ form.password.errors }}
+              </div>
             </div>
+
             <div class="mb-4 flex items-center">
-              <input type="checkbox" id="remember_me" name="remember_me" class="custom-checkbox mr-2">
               <label for="remember_me" class="text-gray-700">Remember me</label>
+              {{ form.remember_me }}
             </div>
+
             <button type="submit" class="w-full bg-gray-400 text-white p-2 rounded mt-4">Sign in</button>
+
           </form>
           {% load socialaccount %}
           <a href="{% provider_login_url 'google' %}?next=/"><button class="w-full bg-white text-gray-700 border border-gray-300 p-2 rounded mt-2 flex items-center justify-center">
@@ -64,7 +76,7 @@
           <br><br><br>
           <h2 class="text-2xl font-bold mb-4">Reset password</h2>
           <p class="text-gray-600 mb-6">Enter the email address associated with your account, and we'll email you a link to reset your password.</p>
-          <form method="POST" action="" onsubmit="showVerifyEmail(); return false;">
+          <form method="POST" onsubmit="showVerifyEmail(); return false;">
             {% csrf_token %}
             <div class="mb-4">
               <label class="block text-gray-700">Email</label>

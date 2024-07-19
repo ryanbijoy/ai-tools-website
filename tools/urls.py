@@ -10,5 +10,6 @@ urlpatterns = [
     path("privacy-policy/", views.privacy_policy, name="privacy_policy"),
     path('activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/', views.activate,
          name='activate'),
-    path('password-reset/', views.PasswordResetView.as_view(), name='password_reset'),
+    path("blog/", views.blog, name="blog"),
+
 ]

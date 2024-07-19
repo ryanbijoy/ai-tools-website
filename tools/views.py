@@ -91,15 +91,19 @@ def user_login(request):
             remember_me = form.cleaned_data['remember_me']
 
             user = authenticate(request, username=email, password=password)
-            print(form)
 
             if user is not None:
-                login(request, user)
-                if not remember_me:
-                    request.session.set_expiry(0)
-                return redirect('/')
+                if user.is_active:
+                    login(request, user)
+                    if not remember_me:
+                        request.session.set_expiry(0)
+                    return redirect('/')
+                else:
+                    form.add_error(None, "This account is inactive.")
             else:
-                messages.error(request, "Invalid email or password.")
+                form.add_error(None, "Invalid email or password.")
+        else:
+            form.add_error(None, "Please correct the errors below.")
     else:
         form = LoginForm()
 
@@ -126,6 +130,9 @@ def submit_rating(request):
     total_votes = ToolRating.objects.filter(ai_tool=ai_tool).count()
     return render(request, 'tool-details.html', {"total_votes": total_votes})
 
+
+def blog(request):
+    return render(request, "blog.html")
 
 def terms_of_service(request):
     return render(request, "terms-of-service.html")

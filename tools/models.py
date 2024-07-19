@@ -33,13 +33,6 @@ class AiTool(models.Model):
     logo = models.CharField(max_length=50)
     affiliate_link = models.BooleanField(default=False)
     website_url = models.URLField(blank=True)
-    # about = models.CharField(max_length=250, null=True, default=False)
-    # pricing_plans = ArrayField(
-    #     models.JSONField(),
-    #     default=list,
-    #     null=True,
-    #     help_text='Enter pricing plans as JSON objects. Example: [{"name": "Basic", "price": "$10/month", "features": "Basic features"}, ...]'
-    # )
 
     def __str__(self):
         return self.ai_tool
