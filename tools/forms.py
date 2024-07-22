@@ -35,7 +35,12 @@ class SignUpForm(forms.ModelForm):
 class LoginForm(forms.Form):
     email = forms.EmailField(widget=forms.EmailInput)
     password = forms.CharField(widget=forms.PasswordInput)
-    remember_me = forms.BooleanField(required=False, widget=forms.CheckboxInput())
+    remember_me = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={
+        "class": "custom-checkbox mr-2",
+        "id": "remember_me",
+        "name": "remember_me",
+        "type": "checkbox"
+    }))
 
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)

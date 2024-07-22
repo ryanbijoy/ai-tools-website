@@ -17,8 +17,19 @@
   <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
 
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
   <link href="{% static 'css/main.css' %}" rel="stylesheet">
 </head>
+
+<style>
+    .dropdown-content {
+        display: none;
+    }
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+</style>
 
 <body class="index-page">
 
@@ -37,9 +48,31 @@
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
+      {% if user.is_authenticated %}
+          <div class="w-80">
+        <div class="relative">
+            <div id="profile" class="flex items-center cursor-pointer p-4 rounded-lg dropdown">
+                <div class="bg-blue-500 text-white rounded-full h-10 w-10 flex items-center justify-center text-lg font-semibold mr-3">T</div>
+                <div>
+                    <p class="text-sm font-semibold">Test User</p>
+                    <p class="text-sm text-gray-500">My Workspace</p>
+                </div>
+                <svg class="w-4 h-4 ml-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </div>
+            <div id="dropdownContent" class="dropdown-content absolute right-0 mt-2 py-2 w-48 bg-white rounded-lg shadow-xl">
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md">My Profile</a>
+                <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm text-red-500 hover:bg-red-100 rounded-md">Sign out</a>
+            </div>
+        </div>
+    </div>
+      {% else %}
       <a class="btn-getstarted flex-md-shrink-0" href="{% url 'signup' %}">Get Started</a>
+      {% endif %}
     </div>
   </header>
+
 
     <main class="main">
     {% block content %}{% endblock %}
@@ -99,6 +132,18 @@
   </footer>
   <a class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
   <div id="preloader"></div>
+
+
+<script>
+    document.getElementById("profile").addEventListener("click", function() {
+        var dropdown = document.getElementById("dropdownContent");
+        if (dropdown.style.display === "none" || dropdown.style.display === "") {
+            dropdown.style.display = "block";
+        } else {
+            dropdown.style.display = "none";
+        }
+    });
+</script>
 
   <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'vendor/aos/aos.js' %}"></script>

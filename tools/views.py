@@ -11,8 +11,9 @@ from django.shortcuts import get_object_or_404
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from .token import account_activation_token
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth import views as auth_views
+from django.urls import reverse_lazy
 
 
 def homepage(request):
@@ -48,7 +49,7 @@ def signup(request):
                 'token': account_activation_token.make_token(user),
             }
 
-            html_content = render_to_string('email-verification.html', context)
+            html_content = render_to_string('verification-email.html', context)
             text_content = strip_tags(html_content)
 
             email = EmailMultiAlternatives(
@@ -64,6 +65,11 @@ def signup(request):
         form = SignUpForm()
 
     return render(request, "signup.html", {"form": form})
+
+
+def user_logout(request):
+    logout(request)
+    return redirect("/")
 
 
 def activate(request, uidb64, token):
@@ -112,7 +118,6 @@ def user_login(request):
     return render(request, "login.html", {"form": form})
 
 
-@login_required(login_url="/login")
 def submit_rating(request):
     ai_tool = request.POST.get('ai_tool')
 
@@ -120,11 +125,9 @@ def submit_rating(request):
         star_rating = request.POST.get('star_rating')
         ai_tool = request.POST.get('ai_tool')
         update_rating = ToolRating.objects.update_or_create(
-            user = request.user,
-            ai_tool = ai_tool,
-            defaults = {
-                "star_rating": star_rating
-            }
+            user=request.user,
+            ai_tool=ai_tool,
+            defaults={"star_rating": star_rating}
         )
 
         total_votes = ToolRating.objects.filter(ai_tool=ai_tool).count()
@@ -134,8 +137,15 @@ def submit_rating(request):
     return render(request, 'tool-details.html', {"total_votes": total_votes})
 
 
+class CustomPasswordResetView(auth_views.PasswordResetView):
+    email_template_name = 'reset-password-email.html'
+    html_email_template_name = 'reset-password-email.html'
+    success_url = reverse_lazy('password_reset_done')
+
+
 def blog(request):
     return render(request, "blog.html")
+
 
 def terms_of_service(request):
     return render(request, "terms-of-service.html")
