@@ -6,87 +6,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ai-website Sign-Up</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const form = document.querySelector('form');
-      const firstNameInput = form.querySelector('[name="first_name"]');
-      const lastNameInput = form.querySelector('[name="last_name"]');
-      const emailInput = form.querySelector('[name="email"]');
-      const passwordInput = form.querySelector('[name="password"]');
-      const confirmPasswordInput = form.querySelector('[name="confirm_password"]');
 
-      function showError(input, message) {
-        const errorDiv = input.parentElement.querySelector('.error-message');
-        errorDiv.textContent = message;
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+    const firstNameInput = form.querySelector('[name="first_name"]');
+    const lastNameInput = form.querySelector('[name="last_name"]');
+    const emailInput = form.querySelector('[name="email"]');
+    const passwordInput = form.querySelector('[name="password"]');
+    const confirmPasswordInput = form.querySelector('[name="confirm_password"]');
+
+    function showError(input, message) {
+      const errorDiv = input.parentElement.querySelector('.error-message');
+      errorDiv.textContent = message;
+    }
+
+    function clearError(input) {
+      const errorDiv = input.parentElement.querySelector('.error-message');
+      errorDiv.textContent = '';
+    }
+
+    function validateFirstName() {
+      if (firstNameInput.value.trim() === '') {
+        showError(firstNameInput, 'First name is required');
+      } else {
+        clearError(firstNameInput);
       }
+    }
 
-      function clearError(input) {
-        const errorDiv = input.parentElement.querySelector('.error-message');
-        errorDiv.textContent = '';
+    function validateLastName() {
+      if (lastNameInput.value.trim() === '') {
+        showError(lastNameInput, 'Last name is required');
+      } else {
+        clearError(lastNameInput);
       }
+    }
 
-      function validateFirstName() {
-        if (firstNameInput.value.trim() === '') {
-          showError(firstNameInput, 'First name is required');
-        } else {
-          clearError(firstNameInput);
-        }
+    function validateEmail() {
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(emailInput.value.trim())) {
+        showError(emailInput, 'Invalid email address');
+      } else {
+        clearError(emailInput);
       }
+    }
 
-      function validateLastName() {
-        if (lastNameInput.value.trim() === '') {
-          showError(lastNameInput, 'Last name is required');
-        } else {
-          clearError(lastNameInput);
-        }
+    function validatePassword() {
+      if (passwordInput.value.length < 5) {
+        showError(passwordInput, 'Password must be at least 5 characters');
+      } else {
+        clearError(passwordInput);
       }
+    }
 
-      function validateEmail() {
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(emailInput.value.trim())) {
-          showError(emailInput, 'Invalid email address');
-        } else {
-          clearError(emailInput);
-        }
+    function validateConfirmPassword() {
+      if (confirmPasswordInput.value !== passwordInput.value) {
+        showError(confirmPasswordInput, 'Passwords do not match');
+      } else {
+        clearError(confirmPasswordInput);
       }
+    }
 
-      function validatePassword() {
-        if (passwordInput.value.length < 5) {
-          showError(passwordInput, 'Password must be at least 5 characters');
-        } else {
-          clearError(passwordInput);
-        }
-      }
+    function showSignupForm() {
+        document.getElementById('signup-form').style.display = 'block';
+        document.getElementById('email-confirmation').style.display = 'none';
+    }
 
-      function validateConfirmPassword() {
-        if (confirmPasswordInput.value !== passwordInput.value) {
-          showError(confirmPasswordInput, 'Passwords do not match');
-        } else {
-          clearError(confirmPasswordInput);
-        }
-      }
+    function showEmailConfirmation() {
+        document.getElementById('signup-form').style.display = 'none';
+        document.getElementById('email-confirmation').style.display = 'block';
+    }
 
-      function showSignupForm() {
-          document.getElementById('signup-form').style.display = 'block';
-          document.getElementById('email-confirmation').style.display = 'none';
-      }
+    firstNameInput.addEventListener('input', validateFirstName);
+    lastNameInput.addEventListener('input', validateLastName);
+    emailInput.addEventListener('input', validateEmail);
+    passwordInput.addEventListener('input', validatePassword);
+    confirmPasswordInput.addEventListener('input', validateConfirmPassword);
 
-      function showEmailConfirmation() {
-          document.getElementById('signup-form').style.display = 'none';
-          document.getElementById('email-confirmation').style.display = 'block';
-      }
+    {% if email_confirmation %}
+    showEmailConfirmation();
+    {% endif %}
+  });
+</script>
 
-      firstNameInput.addEventListener('input', validateFirstName);
-      lastNameInput.addEventListener('input', validateLastName);
-      emailInput.addEventListener('input', validateEmail);
-      passwordInput.addEventListener('input', validatePassword);
-      confirmPasswordInput.addEventListener('input', validateConfirmPassword);
-
-      {% if email_confirmation %}
-      showEmailConfirmation();
-      {% endif %}
-    });
-  </script>
 </head>
 <body class="bg-gradient-to-r from-blue-500 to-purple-600">
   <div class="min-h-screen flex items-center justify-center">

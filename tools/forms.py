@@ -33,26 +33,22 @@ class SignUpForm(forms.ModelForm):
 
 
 class LoginForm(forms.Form):
-    email = forms.EmailField(widget=forms.EmailInput)
-    password = forms.CharField(widget=forms.PasswordInput)
+    email = forms.EmailField(widget=forms.EmailInput(attrs={
+        "class": "w-full p-2 border border-gray-300 rounded mt-1",
+        "placeholder": "example@gmail.com"
+    }))
+
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        "class": "w-full p-2 border border-gray-300 rounded mt-1",
+        "placeholder": "*********"
+    }))
+
     remember_me = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={
         "class": "custom-checkbox mr-2",
         "id": "remember_me",
         "name": "remember_me",
         "type": "checkbox"
     }))
-
-    def __init__(self, *args, **kwargs):
-        super(LoginForm, self).__init__(*args, **kwargs)
-
-        placeholders = {
-            "email": "example@gmail.com",
-            "password": "*********",
-        }
-
-        for field_name, field in self.fields.items():
-            field.widget.attrs["placeholder"] = placeholders.get(field_name, "")
-            field.widget.attrs["class"] = "w-full p-2 border border-gray-300 rounded mt-1"
 
     def clean_email(self):
         email = self.cleaned_data.get('email')

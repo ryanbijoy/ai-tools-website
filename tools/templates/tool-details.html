@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
+{% load custom_filters %}
 {% load static %}
-{% block title %}Create Account{% endblock %}
+{% block title %}Tool Details{% endblock %}
 {% block content %}
+
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
 <div class="page-title">
     <br><br><br><br>
@@ -22,48 +25,60 @@
                 <div class="service-box">
                     <h4>ChatGPT</h4>
                     <div class="services-list">
-                        <a href="#" class="active" data-target="about-content"><i class="bi bi-arrow-right-circle"></i><span>About</span></a>
-                        <a href="#" data-target="pricing-content"><i class="bi bi-arrow-right-circle"></i><span>Pricing Plans</span></a>
+                        <a href="#" class="active about-link" data-target="about-content"><i class="bi bi-arrow-right-circle"></i><span>About</span></a>
+                        <a href="#" class="review-link" data-target="review-content"><i class="bi bi-arrow-right-circle"></i><span>Reviews</span></a>
                     </div>
                 </div>
 
                 <div class="service-box">
-                    <h4>Give a Rating</h4>
+                    <h4 class="text-xl font-semibold mb-4">Give a Rating</h4>
                     <div class="download-catalog">
-                    <form id="rating-form" method="POST" action="{% url 'tool_details' %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="ai_tool" value="ChatGPT">
-                        <div class="star-rating" style="display: flex; justify-content: left; align-items: left;">
-                            <input type="radio" id="5-stars" name="star_rating" value="5">
-                            <label for="5-stars" class="star">&#9733;</label>
-                            <input type="radio" id="4-stars" name="star_rating" value="4">
-                            <label for="4-stars" class="star">&#9733;</label>
-                            <input type="radio" id="3-stars" name="star_rating" value="3">
-                            <label for="3-stars" class="star">&#9733;</label>
-                            <input type="radio" id="2-stars" name="star_rating" value="2">
-                            <label for="2-stars" class="star">&#9733;</label>
-                            <input type="radio" id="1-star" name="star_rating" value="1">
-                            <label for="1-star" class="star">&#9733;</label>
-                        </div>
-                    </form>
-                    <div id="rating-message" class="green-message" style="display: none;">Thank you for your rating!</div>
+                        <form id="rating-form" method="POST" action="{% url 'tool_details' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="ai_tool" value="ChatGPT">
+                            <div class="star-rating" style="display: flex; justify-content: left; align-items: left;">
+                                <input type="radio" id="5-stars" name="star_rating" value="5" onclick="submitRating(5)">
+                                <label for="5-stars" class="star">&#9733;</label>
+                                <input type="radio" id="4-stars" name="star_rating" value="4" onclick="submitRating(4)">
+                                <label for="4-stars" class="star">&#9733;</label>
+                                <input type="radio" id="3-stars" name="star_rating" value="3" onclick="submitRating(3)">
+                                <label for="3-stars" class="star">&#9733;</label>
+                                <input type="radio" id="2-stars" name="star_rating" value="2" onclick="submitRating(2)">
+                                <label for="2-stars" class="star">&#9733;</label>
+                                <input type="radio" id="1-star" name="star_rating" value="1" onclick="submitRating(1)">
+                                <label for="1-star" class="star">&#9733;</label>
+                            </div>
 
+
+                            <div class="mt-4">
+                                <label for="review" class="block text-lg font-medium">Write a Review:</label>
+                                <textarea id="review" name="review" rows="4" class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500" placeholder="Share your thoughts..."></textarea>
+                            </div>
+                            <br>
+                            <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300">Submit</button>
+
+                            <div id="rating-message" class="green-message text-green-600 mt-4 hidden">Thank you for your rating!</div>
+                        </form>
                     </div>
                 </div>
             </div>
 
             <div class="col-lg-8 ps-lg-5" data-aos="fade-up" data-aos-delay="200">
                 <div class="service-content" id="about-content">
-                <iframe width="800" height="440" src="https://www.youtube.com/embed/Wniy8vjcy70" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe width="800" height="440" src="https://www.youtube.com/embed/Wniy8vjcy70" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     <br><br>
-                    <h3>About GPT</h3>
-                    <div class="stars mb-2">
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i> ({{ total_votes }})
+                    <div class="flex justify-between items-center">
+                        <h3>About GPT</h3>
+                        <a href="{{ ai_tool.website_url }}"><button type="submit" class="py-2 px-4 bg-blue-400 text-white p-2 rounded">Visit Site</button></a>
                     </div>
+
+                    <div class="stars mb-2">
+                        {% for i in 5|get_range %}
+                            <i class="bi {{ avg_rating|star_status:i }} text-warning"></i>
+                        {% endfor %}
+                        ({{ total_votes }})
+                    </div>
+
                     <p>
                         ChatGPT is a conversational AI developed by OpenAI. It can understand and generate human-like text based on the input it receives, making it useful for a wide range of applications including customer support, virtual assistants, and content creation.
                     </p>
@@ -80,79 +95,190 @@
                     </p>
                 </div>
 
-                <div class="service-content" id="pricing-content" style="display: none;">
-                    <img src="{% static 'img/pricing.jpg' %}" alt="ChatGPT Pricing" class="img-fluid services-img">
-                    <h3>Pricing Plans</h3>
-                    <p>
-                        ChatGPT offers a variety of pricing plans to suit different needs and budgets. Choose the plan that best fits your requirements and start leveraging the power of conversational AI today.
-                    </p>
-                    <ul>
-                        <li><i class="bi bi-check-circle"></i> <span>Basic Plan: $10/month</span></li>
-                        <li><i class="bi bi-check-circle"></i> <span>Pro Plan: $30/month</span></li>
-                        <li><i class="bi bi-check-circle"></i> <span>Enterprise Plan: Contact us for pricing</span></li>
+                <div class="service-content" id="review-content" style="display: none;">
+                    <h3 class="text-2xl font-bold mb-4">Reviews</h3>
+                    <ul class="review-list space-y-4">
+                        {% for review in reviews %}
+                        <li class="p-4 bg-white shadow-md rounded-lg border border-gray-200">
+                            <div class="flex items-start mb-3">
+                                <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-xl font-semibold text-gray-600 mr-4">
+                                    {{ review.user.username|slice:":1"|upper }}
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center mb-2">
+                                        <div class="text-lg font-semibold text-gray-900">{{ review.user.first_name }}</div>
+                                        <div class="ml-3 flex items-center">
+                                            {% for i in "12345" %}
+                                                {% if i|add:"0" <= review.star_rating %}
+                                                    <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+                                                    </svg>
+                                                {% else %}
+                                                    <svg class="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+                                                    </svg>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-700">{{ review.review }}</p>
+                                </div>
+                            </div>
+                        </li>
+                        {% empty %}
+                        <li class="p-4 bg-white shadow-md rounded-lg border border-gray-200">
+                            <p class="text-gray-500">No reviews yet.</p>
+                        </li>
+                        {% endfor %}
                     </ul>
-                    <p>
-                        Each plan comes with a set of features tailored to different usage levels, ensuring you get the best value for your investment.
-                    </p>
+
+                    <div class="pagination mt-6 flex justify-center">
+                        <div class="flex items-center space-x-2">
+                            {% if reviews.has_previous %}
+                                <a href="#" class="page-link px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600" data-page="1">First</a>
+                                <a href="#" class="page-link px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600" data-page="{{ reviews.previous_page_number }}">Previous</a>
+                            {% endif %}
+
+                            <span class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg">Page {{ reviews.number }} of {{ reviews.paginator.num_pages }}</span>
+
+                            {% if reviews.has_next %}
+                                <a href="#" class="page-link px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600" data-page="{{ reviews.next_page_number }}">Next</a>
+                                <a href="#" class="page-link px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600" data-page="{{ reviews.paginator.num_pages }}">Last</a>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
+<script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-      const links = document.querySelectorAll('.services-list a');
-      const contents = document.querySelectorAll('.service-content');
+document.addEventListener('DOMContentLoaded', function() {
+    const reviewTab = document.querySelector('.review-link');
+    const aboutTab = document.querySelector('.about-link');
+    const reviewContent = document.getElementById('review-content');
+    const aboutContent = document.getElementById('about-content');
+    const paginationContainer = document.querySelector('.pagination');
 
-      links.forEach(link => {
-          link.addEventListener('click', function(e) {
-              e.preventDefault();
-              const target = this.getAttribute('data-target');
+    // Function to handle rating and review submission
+    function submitRating(rating) {
+        const review = document.getElementById('review').value.trim();
+        const formData = new FormData();
+        formData.append('star_rating', rating);
+        formData.append('ai_tool', 'ChatGPT');
+        formData.append('review', review);
+        formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
 
-              // Remove active class from all links
-              links.forEach(link => link.classList.remove('active'));
-              // Add active class to clicked link
-              this.classList.add('active');
+        fetch("{% url 'tool_details' %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            const messageElement = document.getElementById('rating-message');
+            if (data.success) {
+                if (review) {
+                    messageElement.textContent = 'Thank you for your review and rating!';
+                } else {
+                    messageElement.textContent = 'Thank you for your rating!';
+                }
+                messageElement.classList.remove('red-message');
+                messageElement.classList.add('green-message');
+            } else if (data.error) {
+                messageElement.textContent = 'You have already voted.';
+                messageElement.classList.remove('green-message');
+                messageElement.classList.add('red-message');
+            }
+            messageElement.style.display = 'block';
+        })
+        .catch(error => console.error('Error:', error));
+    }
 
-              // Hide all contents
-              contents.forEach(content => content.style.display = 'none');
-              // Show the target content
-              document.getElementById(target).style.display = 'block';
-          });
-      });
+    // Attach the submitRating function to star inputs
+    const stars = document.querySelectorAll('.star-rating input');
+    stars.forEach(star => {
+        star.addEventListener('click', function() {
+            const rating = this.value;
+            submitRating(rating);
+        });
+    });
 
-      // Automatically submit the form when a star rating is selected
-      const stars = document.querySelectorAll('.star-rating input');
-      stars.forEach(star => {
-          star.addEventListener('change', function() {
-              const formData = new FormData(document.getElementById('rating-form'));
-              fetch("{% url 'tool_details' %}", {
-                  method: 'POST',
-                  headers: {
-                      'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
-                  },
-                  body: formData
-              })
-              .then(response => response.json())
-              .then(data => {
-                  const messageElement = document.getElementById('rating-message');
-                  if (data.success) {
-                      messageElement.textContent = 'Thank you for your rating!';
-                      messageElement.classList.remove('red-message');
-                      messageElement.classList.add('green-message');
-                  } else if (data.error) {
-                      messageElement.textContent = 'You have already voted.';
-                      messageElement.classList.remove('green-message');
-                      messageElement.classList.add('red-message');
-                  }
-                  messageElement.style.display = 'block';
-              })
-              .catch(error => console.error('Error:', error));
-          });
-      });
-  });
+    reviewTab.addEventListener('click', function() {
+        aboutContent.style.display = 'none';
+        reviewContent.style.display = 'block';
+        reviewTab.classList.add('active');
+        aboutTab.classList.remove('active');
+    });
+
+    aboutTab.addEventListener('click', function() {
+        reviewContent.style.display = 'none';
+        aboutContent.style.display = 'block';
+        aboutTab.classList.add('active');
+        reviewTab.classList.remove('active');
+    });
+
+    paginationContainer.addEventListener('click', function(e) {
+        if (e.target.classList.contains('page-link')) {
+            e.preventDefault();
+            const page = e.target.getAttribute('data-page');
+            fetch(`?ai_tool={{ ai_tool }}&page=${page}`, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const newContent = doc.querySelector('#review-content').innerHTML;
+                document.querySelector('#review-content').innerHTML = newContent;
+                // Re-bind the pagination event listeners
+                const newPaginationContainer = doc.querySelector('.pagination');
+                paginationContainer.innerHTML = newPaginationContainer.innerHTML;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    });
+
+    const form = document.getElementById('rating-form');
+    const messageElement = document.getElementById('rating-message');
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        fetch("{% url 'tool_details' %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                if (document.getElementById('review').value.trim() !== '') {
+                    messageElement.textContent = 'Thank you for your review!';
+                } else {
+                    messageElement.textContent = 'Thank you for your rating!';
+                }
+                messageElement.classList.remove('red-message');
+                messageElement.classList.add('green-message');
+            } else if (data.error) {
+                messageElement.textContent = 'You have already voted.';
+                messageElement.classList.remove('green-message');
+                messageElement.classList.add('red-message');
+            }
+            messageElement.style.display = 'block';
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
 </script>
-
 
 {% endblock %}

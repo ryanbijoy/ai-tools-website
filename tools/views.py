@@ -14,10 +14,19 @@ from .token import account_activation_token
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
+from django.core.paginator import Paginator
+from django.db.models import Avg
 
 
 def homepage(request):
-    ai_tools = AiTool.objects.all()
+    specific_tool_names = ["ChatGPT", "10Web", "11ElevenLabs", "InVideo"]
+    ai_tools = AiTool.objects.filter(ai_tool__in=specific_tool_names)
+    for tool in ai_tools:
+        avg_rating = ToolRating.objects.filter(ai_tool=tool.ai_tool).aggregate(Avg('star_rating'))['star_rating__avg'] or 0
+        total_votes = ToolRating.objects.filter(ai_tool=tool.ai_tool).count() or 0
+        tool.total_votes = total_votes
+        tool.avg_rating = avg_rating
+
     if request.method == "POST":
         prompt = request.POST.get("prompt")
 
@@ -119,22 +128,40 @@ def user_login(request):
 
 
 def submit_rating(request):
-    ai_tool = request.POST.get('ai_tool')
+    ai_tool = "ChatGPT"
 
     if request.method == "POST":
         star_rating = request.POST.get('star_rating')
         ai_tool = request.POST.get('ai_tool')
-        update_rating = ToolRating.objects.update_or_create(
-            user=request.user,
-            ai_tool=ai_tool,
-            defaults={"star_rating": star_rating}
-        )
+        review = request.POST.get('review')
+
+        if star_rating:
+            ToolRating.objects.update_or_create(
+                user=request.user,
+                ai_tool=ai_tool,
+                defaults={"star_rating": star_rating}
+            )
+
+        if review:
+            ToolRating.objects.update_or_create(
+                user=request.user,
+                ai_tool=ai_tool,
+                defaults={"review": review}
+            )
 
         total_votes = ToolRating.objects.filter(ai_tool=ai_tool).count()
-        return JsonResponse({'success': True, "total_votes": total_votes})
+        avg_rating = ToolRating.objects.filter(ai_tool=ai_tool).aggregate(Avg('star_rating'))['star_rating__avg']
+        return JsonResponse({'success': True, "total_votes": total_votes, "avg_rating": avg_rating})
 
     total_votes = ToolRating.objects.filter(ai_tool=ai_tool).count()
-    return render(request, 'tool-details.html', {"total_votes": total_votes})
+    avg_rating = ToolRating.objects.filter(ai_tool=ai_tool).aggregate(Avg('star_rating'))['star_rating__avg']
+    reviews = ToolRating.objects.filter(ai_tool="ChatGPT")
+
+    paginator = Paginator(reviews, 5)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'tool-details.html', {"total_votes": total_votes, "reviews": page_obj, "avg_rating": avg_rating})
 
 
 class CustomPasswordResetView(auth_views.PasswordResetView):

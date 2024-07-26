@@ -5,13 +5,11 @@ from django.contrib.auth.models import User
 class ToolRating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
     ai_tool = models.CharField(max_length=15)
-    star_rating = models.IntegerField()
+    star_rating = models.IntegerField(null=True, default=None)
+    review = models.TextField(null=True, default=None)
 
     def __str__(self):
-        try:
-            return f'{self.user.email} - {self.ai_tool} - {self.star_rating}'
-        except:
-            return ""
+        return f"Review by {self.user} for {self.ai_tool}"
 
 
 class AiTool(models.Model):

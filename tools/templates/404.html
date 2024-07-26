@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Tool Details{% endblock %}
+{% block content %}
+
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<br><br><br><br><br><br>
+<body class="bg-rose-50 text-gray-800 flex flex-col items-center min-h-screen">
+    <div class="flex flex-col items-center justify-center w-full h-1/2 bg-rose-100 p-10">
+        <h1 class="text-8xl font-bold text-gray-700 mb-4">404</h1>
+        <p class="text-2xl text-gray-500 mb-6">Many people are clear, but you are lost.</p>
+        <a href="https://zapier.com/blog/" class="bg-indigo-600 text-white py-2 px-4 rounded-lg">Back to ai-website</a>
+    </div>
+    <div class="mt-16 w-full px-8">
+        <h2 class="text-3xl font-semibold mb-8 text-center">Most recent articles</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow-lg h-full flex flex-col">
+                <img src="https://via.placeholder.com/300" alt="Firebase Logo" class="w-full h-80 object-cover rounded-t-lg">
+                <div class="flex-grow mt-4">
+                    <a href="#" class="text-sm font-medium text-indigo-600 hover:underline">Automation with Zapier</a>
+                    <h3 class="text-2xl font-semibold mb-2">4 ways to automate Firebase with Zapier</h3>
+                    <p class="text-gray-600 mb-4">Firebase is a powerful platform for optimizing your app development. Pair it with Zapier for even more benefits, like streamlined processes, improved data accuracy, and increased efficiency.</p>
+                </div>
+                <div>
+                    <p class="text-gray-600">By Michael Toth • 3 min read</p>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg h-full flex flex-col">
+                <img src="https://uploads-ssl.webflow.com/63994dae1033718bee6949ce/63bc4b6dcc54dc7de8b2d48b_codeium_logo.png" alt="Webflow Logo" class="w-full h-80 object-cover rounded-t-lg">
+                <div class="flex-grow mt-4">
+                    <a href="#" class="text-sm font-medium text-indigo-600 hover:underline">Automation with Zapier</a>
+                    <h3 class="text-2xl font-semibold mb-2">5 popular Webflow integration ideas</h3>
+                    <p class="text-gray-600 mb-4">Connect Webflow with the other tools you use to automatically update your website content, turn leads into subscribers, get instant alerts, and more.</p>
+                </div>
+                <div>
+                    <p class="text-gray-600">By Nicole Replogle • 3 min read</p>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg h-full flex flex-col">
+                <img src="https://via.placeholder.com/300" alt="ChatGPT Logo" class="w-full h-80 object-cover rounded-t-lg">
+                <div class="flex-grow mt-4">
+                    <a href="#" class="text-sm font-medium text-indigo-600 hover:underline">Automation with Zapier</a>
+                    <h3 class="text-2xl font-semibold mb-2">How to automate ChatGPT</h3>
+                    <p class="text-gray-600 mb-4">From writing emails to building chatbots—here are the different ways to pull the power of ChatGPT into your automated workflows.</p>
+                </div>
+                <div>
+                    <p class="text-gray-600">By Elena Alston • 7 min read</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<br><br><br><br>
+{% endblock %}

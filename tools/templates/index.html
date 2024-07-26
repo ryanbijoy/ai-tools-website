@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 {% block title %}Create Account{% endblock %}
 {% block content %}
 
@@ -31,11 +32,9 @@
             <div class="content text-center py-3 d-flex flex-column h-100">
                 <div class="testimonial-item">
                     <div class="stars mb-2">
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
+                        {% for i in 5|get_range %}
+                            <i class="bi {{ ai_tool.avg_rating|star_status:i }} text-warning"></i>
+                        {% endfor %} ({{ ai_tool.total_votes }})
                     </div>
                 </div>
 
@@ -58,6 +57,7 @@
 </section>
 
 
+<!--removing the contact us form-->
 <section id="contact" class="contact section">
   <div class="container section-title" data-aos="fade-up">
     <h2>Suggestions</h2>

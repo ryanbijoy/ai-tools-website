@@ -17,4 +17,4 @@ class AiToolAdmin(ImportExportModelAdmin):
 
 @admin.register(ToolRating)
 class ToolRatingAdmin(admin.ModelAdmin):
-    list_display = ('user', 'ai_tool', 'star_rating')
+    list_display = ('user', 'ai_tool', 'star_rating', "review")
