@@ -11,8 +11,8 @@
     <nav class="breadcrumbs">
         <div class="container">
             <ol>
-                <li><a href="/">Home</a></li>
-                <li class="current">Tool Details</li>
+                <li><a href="{% url 'home' %}">Tools</a></li>
+                <li class="current">{{ ai_tool.ai_tool }}</li>
             </ol>
         </div>
     </nav>
@@ -23,7 +23,7 @@
         <div class="row gy-5">
             <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
                 <div class="service-box">
-                    <h4>ChatGPT</h4>
+                    <h4>{{ ai_tool.ai_tool }}</h4>
                     <div class="services-list">
                         <a href="#" class="active about-link" data-target="about-content"><i class="bi bi-arrow-right-circle"></i><span>About</span></a>
                         <a href="#" class="review-link" data-target="review-content"><i class="bi bi-arrow-right-circle"></i><span>Reviews</span></a>
@@ -33,9 +33,9 @@
                 <div class="service-box">
                     <h4 class="text-xl font-semibold mb-4">Give a Rating</h4>
                     <div class="download-catalog">
-                        <form id="rating-form" method="POST" action="{% url 'tool_details' %}">
+                        <form id="rating-form" method="POST" action="{% url 'tool_details' ai_tool.ai_tool %}">
                             {% csrf_token %}
-                            <input type="hidden" name="ai_tool" value="ChatGPT">
+                            <input type="hidden" name="ai_tool" value="{{ ai_tool.ai_tool }}">
                             <div class="star-rating" style="display: flex; justify-content: left; align-items: left;">
                                 <input type="radio" id="5-stars" name="star_rating" value="5" onclick="submitRating(5)">
                                 <label for="5-stars" class="star">&#9733;</label>
@@ -65,11 +65,11 @@
 
             <div class="col-lg-8 ps-lg-5" data-aos="fade-up" data-aos-delay="200">
                 <div class="service-content" id="about-content">
-                    <iframe width="800" height="440" src="https://www.youtube.com/embed/Wniy8vjcy70" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe width="800" height="440" src="{{ ai_tool.media_link }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     <br><br>
                     <div class="flex justify-between items-center">
-                        <h3>About GPT</h3>
-                        <a href="{{ ai_tool.website_url }}"><button type="submit" class="py-2 px-4 bg-blue-400 text-white p-2 rounded">Visit Site</button></a>
+                        <h3>About {{ ai_tool.ai_tool }}</h3>
+                        <a target="_blank" href="{{ ai_tool.website_url }}"><button type="submit" class="py-2 px-4 bg-blue-400 text-white p-2 rounded">Visit Site</button></a>
                     </div>
 
                     <div class="stars mb-2">
@@ -80,19 +80,20 @@
                     </div>
 
                     <p>
-                        ChatGPT is a conversational AI developed by OpenAI. It can understand and generate human-like text based on the input it receives, making it useful for a wide range of applications including customer support, virtual assistants, and content creation.
+                        {{ ai_tool.about }}
                     </p>
+                    <br>
                     <ul>
-                        <li><i class="bi bi-check-circle"></i> <span>Developed by OpenAI.</span></li>
-                        <li><i class="bi bi-check-circle"></i> <span>Generates human-like text.</span></li>
-                        <li><i class="bi bi-check-circle"></i> <span>Useful for customer support, virtual assistants, and content creation.</span></li>
+                        {% for feature in ai_tool.features %}
+                            <li><i class="bi bi-check-circle"></i> <span>{{ feature }}</span></li>
+                        {% endfor %}
                     </ul>
-                    <p>
-                        ChatGPT utilizes state-of-the-art natural language processing techniques to provide accurate and relevant responses. It is constantly updated and improved to ensure high performance and user satisfaction.
-                    </p>
-                    <p>
-                        With ChatGPT, businesses and developers can integrate advanced conversational capabilities into their applications, enhancing user experience and operational efficiency.
-                    </p>
+<!--                    <p>-->
+<!--                        ChatGPT utilizes state-of-the-art natural language processing techniques to provide accurate and relevant responses. It is constantly updated and improved to ensure high performance and user satisfaction.-->
+<!--                    </p>-->
+<!--                    <p>-->
+<!--                        With ChatGPT, businesses and developers can integrate advanced conversational capabilities into their applications, enhancing user experience and operational efficiency.-->
+<!--                    </p>-->
                 </div>
 
                 <div class="service-content" id="review-content" style="display: none;">
@@ -171,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
         formData.append('review', review);
         formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
 
-        fetch("{% url 'tool_details' %}", {
+        fetch("{% url 'tool_details' ai_tool.ai_tool %}", {
             method: 'POST',
             headers: {
                 'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
@@ -199,7 +200,6 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error('Error:', error));
     }
 
-    // Attach the submitRating function to star inputs
     const stars = document.querySelectorAll('.star-rating input');
     stars.forEach(star => {
         star.addEventListener('click', function() {
@@ -252,7 +252,7 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         const formData = new FormData(form);
-        fetch("{% url 'tool_details' %}", {
+        fetch("{% url 'tool_details' ai_tool.ai_tool %}", {
             method: 'POST',
             headers: {
                 'X-CSRFToken': formData.get('csrfmiddlewaretoken'),

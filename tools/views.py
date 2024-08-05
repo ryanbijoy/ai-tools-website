@@ -1,6 +1,4 @@
 from django.shortcuts import render, redirect
-from .forms import SignUpForm, LoginForm
-from .models import AiTool, ToolRating
 from django.contrib.auth.models import User as UserDetail
 from django.http import JsonResponse
 from django.core.mail import EmailMultiAlternatives
@@ -10,12 +8,15 @@ from django.utils.encoding import force_bytes, force_str
 from django.shortcuts import get_object_or_404
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
-from .token import account_activation_token
-from django.contrib.auth import logout, login, authenticate
-from django.contrib.auth import views as auth_views
+from django.contrib.auth import logout, login, authenticate, views as auth_views
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator
 from django.db.models import Avg
+# from django.conf import settings
+from .token import account_activation_token
+from .forms import SignUpForm, LoginForm
+from .models import AiTool, ToolRating
+# from .model_integration import assistant_api
 
 
 def homepage(request):
@@ -28,13 +29,15 @@ def homepage(request):
         tool.avg_rating = avg_rating
 
     if request.method == "POST":
+        # assistant_id = settings.ASSISTANT_ID
         prompt = request.POST.get("prompt")
+        # response = assistant_api(assistant_id, prompt)
 
     return render(request, "index.html", {"ai_tools": ai_tools})
 
 
 def signup(request):
-    if request.user and request.user.is_authenticated:
+    if request.user.is_authenticated:
         return redirect("/")
 
     if request.method == "POST":
@@ -97,7 +100,7 @@ def activate(request, uidb64, token):
 
 
 def user_login(request):
-    if request.user and request.user.is_authenticated:
+    if request.user.is_authenticated:
         return redirect("/")
 
     if request.method == "POST":
@@ -127,13 +130,12 @@ def user_login(request):
     return render(request, "login.html", {"form": form})
 
 
-def submit_rating(request):
-    ai_tool = "ChatGPT"
+def submit_rating(request, name):
+    ai_tool = get_object_or_404(AiTool, ai_tool=name)
 
     if request.method == "POST":
         star_rating = request.POST.get('star_rating')
-        ai_tool = request.POST.get('ai_tool')
-        review = request.POST.get('review')
+        review = request.POST.get('review').strip()
 
         if star_rating:
             ToolRating.objects.update_or_create(
@@ -146,7 +148,7 @@ def submit_rating(request):
             ToolRating.objects.update_or_create(
                 user=request.user,
                 ai_tool=ai_tool,
-                defaults={"review": review}
+                defaults={"review": review if review else None}
             )
 
         total_votes = ToolRating.objects.filter(ai_tool=ai_tool).count()
@@ -155,13 +157,15 @@ def submit_rating(request):
 
     total_votes = ToolRating.objects.filter(ai_tool=ai_tool).count()
     avg_rating = ToolRating.objects.filter(ai_tool=ai_tool).aggregate(Avg('star_rating'))['star_rating__avg']
-    reviews = ToolRating.objects.filter(ai_tool="ChatGPT")
+    reviews = ToolRating.objects.filter(ai_tool=ai_tool).exclude(review__isnull=True).exclude(review='')
 
     paginator = Paginator(reviews, 5)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'tool-details.html', {"total_votes": total_votes, "reviews": page_obj, "avg_rating": avg_rating})
+    return render(request, 'tool-details.html',
+                  {"total_votes": total_votes, "reviews": page_obj,
+                   "avg_rating": avg_rating, "ai_tool": ai_tool})
 
 
 class CustomPasswordResetView(auth_views.PasswordResetView):

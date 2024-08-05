@@ -13,12 +13,24 @@ class ToolRating(models.Model):
 
 
 class AiTool(models.Model):
-    ai_tool = models.CharField(max_length=25)
-    type = models.CharField(max_length=25)
-    description = models.CharField()
-    logo = models.CharField(max_length=50)
+    ai_tool = models.CharField(max_length=50)
+    category = models.CharField(max_length=50)
+    description = models.CharField(max_length=250)
+    media_link = models.URLField()
+    website_url = models.URLField()
+    logo = models.CharField(max_length=50, blank=True, null=True)
+    about = models.CharField(max_length=250)
+    features = models.JSONField(max_length=250)
     affiliate_link = models.BooleanField(default=False)
-    website_url = models.URLField(blank=True)
 
     def __str__(self):
         return self.ai_tool
+
+
+class Testimonial(models.Model):
+    full_name = models.CharField(max_length=25)
+    photo_url = models.CharField(max_length=25)
+    testimonial = models.CharField(max_length=150)
+
+    def __str__(self):
+        return self.full_name

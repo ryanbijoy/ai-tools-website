@@ -1471,3 +1471,14 @@ section,
 .red-message {
     color: red;
 }
+
+.category-buttons-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Adjust as needed */
+    margin-bottom: 20px; /* Adjust as needed */
+}
+
+#about {
+    padding-top: 10px; /* Adjust as needed */
+}
