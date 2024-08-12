@@ -12,28 +12,32 @@ from django.contrib.auth import logout, login, authenticate, views as auth_views
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator
 from django.db.models import Avg
-# from django.conf import settings
 from .token import account_activation_token
 from .forms import SignUpForm, LoginForm
 from .models import AiTool, ToolRating
-# from .model_integration import assistant_api
+from .promotion import multi_promotion
 
 
 def homepage(request):
-    specific_tool_names = ["ChatGPT", "10Web", "11ElevenLabs", "InVideo"]
-    ai_tools = AiTool.objects.filter(ai_tool__in=specific_tool_names)
+    featured_tools = ["ChatGPT", "10Web", "11ElevenLabs", "InVideo"]
+    categories = ["Featured", "Image Generation", "Conversational AI", "Writing Assistant", "Workflow Automation", "Meeting Assistant"]
+
+    section_category = request.GET.get('category', 'Featured')
+
+    if section_category == "Featured":
+        ai_tools = AiTool.objects.filter(ai_tool__in=featured_tools)[:4]
+    else:
+        ai_tools = AiTool.objects.filter(category=section_category)[:4]
+
     for tool in ai_tools:
         avg_rating = ToolRating.objects.filter(ai_tool=tool.ai_tool).aggregate(Avg('star_rating'))['star_rating__avg'] or 0
         total_votes = ToolRating.objects.filter(ai_tool=tool.ai_tool).count() or 0
         tool.total_votes = total_votes
         tool.avg_rating = avg_rating
 
-    if request.method == "POST":
-        # assistant_id = settings.ASSISTANT_ID
-        prompt = request.POST.get("prompt")
-        # response = assistant_api(assistant_id, prompt)
-
-    return render(request, "index.html", {"ai_tools": ai_tools})
+    return render(request, "index.html",
+                  {"ai_tools": ai_tools, "multi_promotion": multi_promotion, "categories": categories,
+                   "featured_tools": featured_tools, "selected_category": section_category})
 
 
 def signup(request):
@@ -176,6 +180,12 @@ class CustomPasswordResetView(auth_views.PasswordResetView):
 
 def blog(request):
     return render(request, "blog.html")
+
+
+def tool_categories(request):
+    ai_tool = AiTool.objects.all()
+
+    return render(request, "category.html", {"ai_tools": ai_tool})
 
 
 def terms_of_service(request):

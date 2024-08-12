@@ -8,6 +8,7 @@ urlpatterns = [
     path("login/", views.user_login, name="login"),
     path("tool/<str:name>/", views.submit_rating, name="tool_details"),
     path("terms-of-services/", views.terms_of_service, name="terms_of_service"),
+    path("categories/", views.tool_categories, name="categories"),
     path("privacy-policy/", views.privacy_policy, name="privacy_policy"),
     path('activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/', views.activate, name='activate'),
     path("blog/", views.blog, name="blog"),

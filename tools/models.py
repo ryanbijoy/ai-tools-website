@@ -19,8 +19,8 @@ class AiTool(models.Model):
     media_link = models.URLField()
     website_url = models.URLField()
     logo = models.CharField(max_length=50, blank=True, null=True)
-    about = models.CharField(max_length=250)
-    features = models.JSONField(max_length=250)
+    about = models.CharField(max_length=300)
+    features = models.JSONField(max_length=300)
     affiliate_link = models.BooleanField(default=False)
 
     def __str__(self):

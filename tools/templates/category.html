@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block title %}Create Account{% endblock %}
+{% block content %}
+
+
+<section id="about" class="about section">
+<div class="container" data-aos="fade-up">
+            <br><br><br><br><br><br><br><br><br>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 justify-content-center">
+        {% for ai_tool in ai_tools %}
+        <div class="col mb-4">
+            <div class="content text-center py-3 d-flex flex-column h-100">
+                <div class="testimonial-item">
+                    <div class="stars mb-2">
+                        {% for i in 5|get_range %}
+                            <i class="bi {{ ai_tool.avg_rating|star_status:i }} text-warning"></i>
+                        {% endfor %} ({{ total_votes }})
+                    </div>
+                </div>
+
+                <a href="{% url 'tool_details' ai_tool.ai_tool %}"><img src="{% static ai_tool.logo %}" class="img-fluid mb-2" alt=""></a>
+                <h3>{{ ai_tool.category }}</h3>
+                <a href="{% url 'tool_details' ai_tool.ai_tool %}"><h2>{{ ai_tool.ai_tool }}</h2></a>
+                <p>{{ ai_tool.description }}</p>
+                <div class="mt-auto">
+                    <a href="{{ ai_tool.website_url }}" target="_blank" class="btn-read-more d-inline-flex align-items-center justify-content-center">
+                        <span>Visit Site</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+</section>
+
+
+{% endblock %}
