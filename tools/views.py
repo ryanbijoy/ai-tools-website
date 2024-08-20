@@ -25,7 +25,7 @@ def homepage(request):
     if request.method == 'POST':
         user_prompt = request.POST.get("prompt")
         if user_prompt:
-            result = [ask_question(user_prompt)]
+            result = ask_question(user_prompt)
             ai_tools = AiTool.objects.filter(ai_tool__in=result)
 
     return render(request, "index.html", {"ai_tools": ai_tools, "categories": categories, "category_count": categories.count(),

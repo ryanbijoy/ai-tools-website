@@ -901,6 +901,37 @@ section,
   margin-right: 200px;;
 }
 
+.star-rating {
+    display: flex;
+    direction: rtl; /* Right-to-left for correct ordering */
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating label {
+    font-size: 2rem;
+    color: #ddd;
+    cursor: pointer;
+    margin: 0 5px; /* Add spacing between stars */
+}
+
+.star-rating input:checked ~ label {
+    color: #f5b301;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+.star-rating input:checked ~ label:hover,
+.star-rating input:checked ~ label:hover ~ label {
+    color: #f5b301;
+}
+
+.star-rating label {
+    margin: 0 5px; /* Add spacing between stars */
+}
+
 .message {
     font-weight: bold;
     margin-top: 10px;

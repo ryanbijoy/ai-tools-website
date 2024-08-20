@@ -19,7 +19,7 @@ SYSTEM_PROMPT = """Based on the following context: {context}, please recommend t
 
 def ask_question(user_prompt):
     embeddings = OpenAIEmbeddings()
-    vector_store = Chroma(persist_directory="./chroma_db", embedding_function=embeddings)
+    vector_store = Chroma(persist_directory="./data", embedding_function=embeddings)
     llm = ChatOpenAI(model_name="gpt-4o-mini")
 
     retriever = vector_store.as_retriever(search_type="similarity_score_threshold",
