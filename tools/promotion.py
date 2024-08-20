@@ -39,3 +39,41 @@ multi_promotion = {
         "website_url": "https://www.chatgpt.com"
 },
 }
+
+featured_tools = ["ChatGPT", "10Web", "11ElevenLabs", "InVideo", "AIVA"]
+
+testimonials = {
+    "person1": {
+        "name": "Jeremy Galante",
+        "designation": "Senior SEO Manager at ClickUp",
+        "testimonial": '"Surfer has quickly become essential in our SEO workflow at ClickUp... Content Planner automates steps and the NLP engine enhances our toolbox."',
+        "person_image": "img/runway.png",
+        "company_logo": "logo/chatgpt.png",
+        "field": "SAAS"
+    },
+    "person2": {
+        "name": "Jete Laager",
+        "designation": "Content and Localisation Lead at Bolt",
+        "testimonial": '"Surfer has righteously earned its place in our content team’s tool arsenal. We use it daily and can wholeheartedly recommend trying it."',
+        "person_image": "img/runway.png",
+        "company_logo": "logo/runway.png",
+        "field": "TECHNOLOGY"
+    }
+}
+
+promotion_card = {
+    "card1": {
+        "tool_name": "Runway",
+        "badge": "Gen-3",
+        "content": "A new frontier for fast, high-fidelity, controllable video generation.",
+        "website_url": "",
+        "image": "img/runway.png"
+    },
+    "card2": {
+        "tool_name": "ChatGPT",
+        "badge": "GPT4o-mini",
+        "content": "Chat about email, screenshots, files, and anything on your screen.",
+        "website_url": "",
+        "image": "img/chatgpt.webp"
+    }
+}

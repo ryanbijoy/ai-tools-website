@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Avg
 
 
 class ToolRating(models.Model):
@@ -12,19 +13,33 @@ class ToolRating(models.Model):
         return f"Review by {self.user} for {self.ai_tool}"
 
 
+class Category(models.Model):
+    title = models.CharField(max_length=50)
+    active = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title
+
+
 class AiTool(models.Model):
+    category = models.ManyToManyField(Category, blank=True, related_name="toolcategory")
     ai_tool = models.CharField(max_length=50)
-    category = models.CharField(max_length=50)
-    description = models.CharField(max_length=250)
+    description = models.TextField()
     media_link = models.URLField()
     website_url = models.URLField()
     logo = models.CharField(max_length=50, blank=True, null=True)
-    about = models.CharField(max_length=300)
-    features = models.JSONField(max_length=300)
+    about = models.TextField()
+    features = models.JSONField(default=dict)
     affiliate_link = models.BooleanField(default=False)
 
     def __str__(self):
         return self.ai_tool
+
+    def avg_rating(self):
+        return ToolRating.objects.filter(ai_tool=self).aggregate(Avg('star_rating'))['star_rating__avg'] or 0
+
+    def total_votes(self):
+        return ToolRating.objects.filter(ai_tool=self).count() or 0
 
 
 class Testimonial(models.Model):

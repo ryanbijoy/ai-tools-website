@@ -16,7 +16,7 @@
                     <div class="stars mb-2">
                         {% for i in 5|get_range %}
                             <i class="bi {{ ai_tool.avg_rating|star_status:i }} text-warning"></i>
-                        {% endfor %} ({{ total_votes }})
+                        {% endfor %} ({{ ai_tool.total_votes }})
                     </div>
                 </div>
 

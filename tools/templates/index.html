@@ -14,7 +14,7 @@
           {% csrf_token %}
           <div class="d-flex justify-content-center mt-3" data-aos="fade-up" data-aos-delay="200">
             <input class="form-control me-2" name="prompt" placeholder="Enter Your Prompt..">
-            <a type="submit" class="btn-get-started">Search <i class="bi bi-arrow-right"></i></a>
+            <button type="submit" class="btn-get-started">Search <i class="bi bi-arrow-right"></i></button>
           </div>
       </form>
     </div>
@@ -26,43 +26,79 @@
     <div class="flex items-center space-x-4">
         <span class="font-semibold">Category:</span>
         {% for category in categories %}
-            <button onclick="filterCategory('{{ category }}')" class="px-4 py-2 rounded-full border text-sm {% if selected_category == category %}bg-blue-100 border-green-300 text-blue-700{% else %}bg-white border-gray-300 hover:bg-gray-100 text-gray-700{% endif %} focus:outline-none">
-                {{ category }}
+            <button onclick="filterCategory({{ forloop.counter0 }}, {{ category_count }})" class="px-4 py-2 rounded-full border text-sm {% if selected_category == category %}bg-blue-100 border-green-300 text-blue-700{% else %}bg-white border-gray-300 hover:bg-gray-100 text-gray-700{% endif %} focus:outline-none">
+                {{ category.title }}
             </button>
         {% endfor %}
     </div>
 </div>
 
 <section id="about" class="about section">
-<div class="container" data-aos="fade-up">
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 justify-content-center">
+    {% if ai_tools %}
+    <div class="container splide" style="display: block;" id="search_results">
+        <div class="splide__track">
+            <ul class="splide__list">
+                {% for ai_tool in ai_tools %}
+                    <li class="splide__slide">
+                        <div class="content text-center py-3 d-flex flex-column h-100">
+                            <div class="testimonial-item">
+                                <div class="stars mb-2">
+                                    {% for i in 5|get_range %}
+                                        <i class="bi {{ ai_tool.avg_rating|star_status:i }} text-warning"></i>
+                                    {% endfor %} ({{ ai_tool.total_votes }})
+                                </div>
+                            </div>
 
-        {% for ai_tool in ai_tools %}
-        <div class="col mb-4">
-            <div class="content text-center py-3 d-flex flex-column h-100">
-                <div class="testimonial-item">
-                    <div class="stars mb-2">
-                        {% for i in 5|get_range %}
-                            <i class="bi {{ ai_tool.avg_rating|star_status:i }} text-warning"></i>
-                        {% endfor %} ({{ ai_tool.total_votes }})
-                    </div>
-                </div>
-
-                <a href="{% url 'tool_details' ai_tool.ai_tool %}"><img src="{% static ai_tool.logo %}" class="img-fluid mb-2" alt=""></a>
-                <h3>{{ ai_tool.category }}</h3>
-                <a href="{% url 'tool_details' ai_tool.ai_tool %}"><h2>{{ ai_tool.ai_tool }}</h2></a>
-                <p>{{ ai_tool.description }}</p>
-                <div class="mt-auto">
-                    <a href="{{ ai_tool.website_url }}" target="_blank" class="btn-read-more d-inline-flex align-items-center justify-content-center">
-                        <span>Visit Site</span>
-                        <i class="bi bi-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
+                            <a href="{% url 'tool_details' ai_tool.ai_tool %}"><img src="{% static ai_tool.logo %}" class="img-fluid mb-2" alt=""></a>
+                            <h3>{{ ai_tool.category }}</h3>
+                            <a href="{% url 'tool_details' ai_tool.ai_tool %}"><h2>{{ ai_tool.ai_tool }}</h2></a>
+                            <p>{{ ai_tool.description }}</p>
+                            <div class="mt-auto">
+                                <a href="{{ ai_tool.website_url }}" target="_blank" class="btn-read-more d-inline-flex align-items-center justify-content-center">
+                                    <span>Visit Site</span>
+                                    <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
-        {% endfor %}
+    </div>
+{% else %}
+{% for category in categories %}
+    <div class="container splide" {% if forloop.counter0 == 0 %} style ="display: block;" {% else %}  style="display: none;" {% endif %} id="category_{{ forloop.counter0 }}" data-aos="fade-up">
+    <div class="splide__track">
+        <ul class="splide__list">
+            {% for ai_tool in category.toolcategory.all %}
+                <li class="splide__slide">
+                    <div class="content text-center py-3 d-flex flex-column h-100">
+                        <div class="testimonial-item">
+                            <div class="stars mb-2">
+                                {% for i in 5|get_range %}
+                                    <i class="bi {{ ai_tool.avg_rating|star_status:i }} text-warning"></i>
+                                {% endfor %} ({{ ai_tool.total_votes }})
+                            </div>
+                        </div>
+
+                        <a href="{% url 'tool_details' ai_tool.ai_tool %}"><img src="{% static ai_tool.logo %}" class="img-fluid mb-2" alt=""></a>
+                        <h3>{{ ai_tool.category }}</h3>
+                        <a href="{% url 'tool_details' ai_tool.ai_tool %}"><h2>{{ ai_tool.ai_tool }}</h2></a>
+                        <p>{{ ai_tool.description }}</p>
+                        <div class="mt-auto">
+                            <a href="{{ ai_tool.website_url }}" target="_blank" class="btn-read-more d-inline-flex align-items-center justify-content-center">
+                                <span>Visit Site</span>
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
     </div>
 </div>
+{% endfor %}
+{% endif %}
 </section>
 
 <div class="bg-gradient-to-r from-gray-100 to-gray-50 text-gray-900">
@@ -128,33 +164,31 @@
     <h2 class="text-center text-3xl font-bold mb-10">More tools from Adobe Podcast</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <!-- Card 1: Mic Check -->
         <div>
             <div class="relative h-80">
-                <img src="{% static 'img/runway.png' %}" alt="Mic Check" class="absolute inset-0 h-full w-full object-cover rounded-3xl">
+                <img src="{% static card.card1.image %}" alt="Mic Check" class="absolute inset-0 h-full w-full object-cover rounded-3xl">
             </div>
             <div class="p-6 text-center">
                 <div class="flex items-center justify-center">
-                    <h3 class="text-2xl font-bold">Runway</h3>
-                    <span class="ml-2 bg-gray-200 text-gray-800 font-bold text-xs px-2 py-1 rounded-full">Gen-3</span>
+                    <h3 class="text-2xl font-bold">{{ card.card1.tool_name }}</h3>
+                    <span class="ml-2 bg-gray-200 text-gray-800 font-bold text-xs px-2 py-1 rounded-full">{{ card.card1.badge }}</span>
                 </div>
-                <p class="text-gray-600 font-semibold md-2">A new frontier for fast, high-fidelity, controllable video generation.</p>
-                <a href="#" class="mt-4 inline-block px-7 font-semibold py-3 bg-black text-white rounded-full">Visit Site</a>
+                <p class="text-gray-600 font-semibold md-2">{{ card.card1.content }}</p>
+                <a href="{{ card.card1.website_url }}" class="mt-4 inline-block px-7 font-semibold py-3 bg-black text-white rounded-full">Visit Site</a>
             </div>
         </div>
 
-        <!-- Card 2: Studio -->
         <div>
             <div class="relative h-80">
-                <img src="{% static 'img/chatgpt.webp' %}" alt="Studio" class="absolute inset-0 h-full w-full object-cover rounded-t-lg">
+                <img src="{% static card.card2.image %}" alt="Studio" class="absolute inset-0 h-full w-full object-cover rounded-t-lg">
             </div>
             <div class="p-6 text-center">
                 <div class="flex items-center justify-center">
-                    <h3 class="text-2xl font-bold">ChatGPT</h3>
-                    <span class="ml-2 bg-gray-200 text-gray-800 font-bold text-xs px-2 py-1 rounded-full">GPT4o-mini</span>
+                    <h3 class="text-2xl font-bold">{{ card.card2.tool_name }}</h3>
+                    <span class="ml-2 bg-gray-200 text-gray-800 font-bold text-xs px-2 py-1 rounded-full">{{ card.card2.badge }}</span>
                 </div>
-                <p class="text-gray-600 font-semibold md-2">Chat about email, screenshots, files, and anything on your screen.</p>
-                <a href="#" class="mt-4 inline-block px-7 font-semibold py-3 bg-black text-white rounded-full">Visit Site</a>
+                <p class="text-gray-600 font-semibold md-2">{{ card.card2.content }}</p>
+                <a href="{{ card.card2.website_url }}" class="mt-4 inline-block px-7 font-semibold py-3 bg-black text-white rounded-full">Visit Site</a>
             </div>
         </div>
     </div>
@@ -185,59 +219,41 @@
 <div class="bg-gray-50 font-sans">
     <div class="max-w-4xl mx-auto py-16 px-4">
         <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-black">We're revolutionizing SEO &mdash;</h2>
-            <p class="text-3xl font-bold text-gray-600 mt-2">but don't take our word for it. See what some of our users have to say.</p>
+            <h2 class="text-3xl font-bold text-black">Testimonials</h2>
+            <p class="text-3xl font-bold text-gray-600 mt-2">See what our users have to say about us</p>
             <div class="flex justify-center items-center mt-4 space-x-2">
-                <span class="text-lg font-semibold text-gray-700">4.8 RATING</span>
-                <span class="text-red-500 text-lg">500+ REVIEWS</span>
-                <span class="bg-red-100 text-red-600 text-sm py-1 px-2 rounded-full">Users Love Us</span>
+                <span class="bg-red-100 font-semibold text-red-600 text-sm py-1 px-2 rounded-full">Loved by Top CEOs</span>
             </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <!-- Testimonial 1 -->
-            <div class="bg-black text-white p-6 rounded-lg shadow-md">
+            {% for key, person in testimonial.items %}
+            <div class="{% if forloop.counter|divisibleby:2 %}bg-red-500{% else %}bg-black{% endif %} text-white p-6 rounded-lg shadow-md">
                 <div class="mb-4">
-                    <span class="bg-white text-black text-xs font-semibold px-2 py-1 rounded-full">SAAS</span>
+                    <span class="{% if forloop.counter == 2 %}bg-black text-white{% else %}bg-white text-black{% endif %} text-xs font-semibold px-2 py-1 rounded-full">{{ person.field }}</span>
                 </div>
-                <p class="text-lg leading-relaxed">"Surfer has quickly become essential in our SEO workflow at ClickUp... Content Planner automates steps and the NLP engine enhances our toolbox."</p>
+                <p class="text-lg leading-relaxed">{{ person.testimonial }}</p>
                 <div class="mt-6 flex items-center">
-                    <img src="{% static 'img/runway.png' %}" alt="Jeremy Galante" class="w-10 h-10 rounded-full mr-3">
+                    <img src="{% static person.person_image %}" alt="{{ person.name }}" class="w-10 h-10 rounded-full mr-3">
                     <div>
-                        <p class="text-sm font-semibold">Jeremy Galante</p>
-                        <p class="text-xs text-gray-400">Senior SEO Manager at ClickUp</p>
+                        <p class="text-sm font-semibold">{{ person.name }}</p>
+                        <p class="text-xs text-gray-400">{{ person.designation }}</p>
                     </div>
                     <div class="ml-auto">
-                        <img src="{% static 'logo/chatgpt.png' %}" alt="ClickUp logo" class="w-10 h-10">
+                        <img src="{% static person.company_logo %}" alt="{{ person.name }}'s company logo" class="w-10 h-10">
                     </div>
                 </div>
             </div>
-
-            <!-- Testimonial 2 -->
-            <div class="bg-red-500 text-white p-6 rounded-lg shadow-md">
-                <div class="mb-4">
-                    <span class="bg-black text-white text-xs font-semibold px-2 py-1 rounded-full">TECHNOLOGY</span>
-                </div>
-                <p class="text-lg leading-relaxed">"Surfer has righteously earned its place in our content team’s tool arsenal. We use it daily and can wholeheartedly recommend trying it."</p>
-                <div class="mt-6 flex items-center">
-                    <img src="{% static 'img/runway.png' %}" alt="Jete Laager" class="w-10 h-10 rounded-full mr-3">
-                    <div>
-                        <p class="text-sm font-semibold">Jete Laager</p>
-                        <p class="text-xs text-gray-400">Content and Localisation Lead at Bolt</p>
-                    </div>
-                    <div class="ml-auto">
-                        <img src="{% static 'logo/runway.png' %}" alt="Bolt logo" class="w-10 h-10">
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </div>
 
 
 <script>
+    var slides = {};
     const promotions = {{ multi_promotion|safe }};
-    let currentButton = document.getElementById("Coding-btn"); // Initially selected button
+    let currentButton = document.getElementById("Coding-btn"); 
 
     function showPromotion(key) {
         const promo = promotions[key];
@@ -259,9 +275,74 @@
         showPromotion('Coding');
     });
 
-    function filterCategory(category) {
-    window.location.href = `/?category=${encodeURIComponent(category)}`;
+    Splide.defaults = {
+        autoplay: true,
+        interval: 2000,
+        arrows: true,
+        drag: 'free',
+        gap: '10px',
+        pagination: true,
+        height: '100px',
+        fixedHeight: '495px',
+        perPage: 4,
+    };
+
+    function manageSplideInstances(category, count) {
+        for (let i = 0; i < count; i++) {
+            var elem = document.getElementById("category_" + i);
+
+            if (i === category) {
+                elem.style.display = "block";
+                if (!slides["category_" + i]) {
+                    slides["category_" + i] = new Splide("#category_" + i).mount();
+                } else {
+                    slides["category_" + i].mount();
+                }
+            } else {
+                if (slides["category_" + i]) {
+                    slides["category_" + i].destroy(true);
+                    slides["category_" + i] = null;
+                }
+                elem.style.display = "none";
+            }
+        }
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        {% if ai_tools %}
+            new Splide("#search_results").mount();
+        {% else %}
+            manageSplideInstances(0, {{ categories|length }});
+        {% endif %}
+    });
+
+    function filterCategory(category, count) {
+        manageSplideInstances(category, count);
+    }
+
+    let currentActiveButton = null;
+
+    document.addEventListener('DOMContentLoaded', function() {
+    currentActiveButton = document.querySelector('.category-buttons-container button');
+    if (currentActiveButton) {
+        currentActiveButton.classList.remove("bg-white", "border-gray-300", "hover:bg-gray-100", "text-gray-700");
+        currentActiveButton.classList.add("bg-blue-100", "border-green-300", "text-blue-700");
+    }
+    manageSplideInstances(0, {{ categories|length }});
+});
+
+    function filterCategory(category, count) {
+    if (currentActiveButton) {
+        currentActiveButton.classList.remove("bg-blue-100", "border-green-300", "text-blue-700");
+        currentActiveButton.classList.add("bg-white", "border-gray-300", "hover:bg-gray-100", "text-gray-700");
+    }
+
+    currentActiveButton = event.currentTarget;
+    currentActiveButton.classList.remove("bg-white", "border-gray-300", "hover:bg-gray-100", "text-gray-700");
+    currentActiveButton.classList.add("bg-blue-100", "border-green-300", "text-blue-700");
+
+    manageSplideInstances(category, count);
+}
 </script>
 
 

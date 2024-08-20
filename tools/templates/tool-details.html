@@ -4,7 +4,7 @@
 {% block title %}Tool Details{% endblock %}
 {% block content %}
 
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet"/>
 
 <div class="page-title">
     <br><br><br><br>
@@ -37,18 +37,17 @@
                             {% csrf_token %}
                             <input type="hidden" name="ai_tool" value="{{ ai_tool.ai_tool }}">
                             <div class="star-rating" style="display: flex; justify-content: left; align-items: left;">
-                                <input type="radio" id="5-stars" name="star_rating" value="5" onclick="submitRating(5)">
+                                <input type="radio" id="5-stars" name="star_rating" value="5" class="rating-input">
                                 <label for="5-stars" class="star">&#9733;</label>
-                                <input type="radio" id="4-stars" name="star_rating" value="4" onclick="submitRating(4)">
+                                <input type="radio" id="4-stars" name="star_rating" value="4" class="rating-input">
                                 <label for="4-stars" class="star">&#9733;</label>
-                                <input type="radio" id="3-stars" name="star_rating" value="3" onclick="submitRating(3)">
+                                <input type="radio" id="3-stars" name="star_rating" value="3" class="rating-input">
                                 <label for="3-stars" class="star">&#9733;</label>
-                                <input type="radio" id="2-stars" name="star_rating" value="2" onclick="submitRating(2)">
+                                <input type="radio" id="2-stars" name="star_rating" value="2" class="rating-input">
                                 <label for="2-stars" class="star">&#9733;</label>
-                                <input type="radio" id="1-star" name="star_rating" value="1" onclick="submitRating(1)">
+                                <input type="radio" id="1-star" name="star_rating" value="1" class="rating-input">
                                 <label for="1-star" class="star">&#9733;</label>
                             </div>
-
 
                             <div class="mt-4">
                                 <label for="review" class="block text-lg font-medium">Write a Review:</label>
@@ -74,9 +73,9 @@
 
                     <div class="stars mb-2">
                         {% for i in 5|get_range %}
-                            <i class="bi {{ avg_rating|star_status:i }} text-warning"></i>
+                            <i class="bi {{ ai_tool.avg_rating|star_status:i }} text-warning"></i>
                         {% endfor %}
-                        ({{ total_votes }})
+                        ({{ ai_tool.total_votes }})
                     </div>
 
                     <p>
@@ -88,12 +87,6 @@
                             <li><i class="bi bi-check-circle"></i> <span>{{ feature }}</span></li>
                         {% endfor %}
                     </ul>
-<!--                    <p>-->
-<!--                        ChatGPT utilizes state-of-the-art natural language processing techniques to provide accurate and relevant responses. It is constantly updated and improved to ensure high performance and user satisfaction.-->
-<!--                    </p>-->
-<!--                    <p>-->
-<!--                        With ChatGPT, businesses and developers can integrate advanced conversational capabilities into their applications, enhancing user experience and operational efficiency.-->
-<!--                    </p>-->
                 </div>
 
                 <div class="service-content" id="review-content" style="display: none;">
@@ -154,6 +147,59 @@
     </div>
 </section>
 
+
+
+<!-- Main modal -->
+<div id="authentication-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-full bg-black bg-opacity-25 backdrop-blur-[2px]">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Sign in to our platform</h3>
+                <button type="button" class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="authentication-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="p-4 md:p-5">
+                <form class="space-y-4" action="#">
+                    <div>
+                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+                        <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="name@company.com" required />
+                    </div>
+                    <div>
+                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your password</label>
+                        <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
+                    </div>
+                    <div class="flex justify-between">
+                        <div class="flex items-start">
+                            <div class="flex items-center h-5">
+                                <input id="remember" type="checkbox" value="" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-600 dark:border-gray-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" required />
+                            </div>
+                            <label for="remember" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Remember me</label>
+                        </div>
+                        <a href="#" class="text-sm text-blue-700 hover:underline dark:text-blue-500">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login to your account</button>
+                </form>
+                {% load socialaccount %}
+                <a href="{% provider_login_url 'google' %}?next=/"><button class="w-full bg-white text-gray-700 border border-gray-300 p-2 rounded mt-2 flex items-center justify-center">
+                  <img src="https://www.google.com/favicon.ico" class="w-5 h-5 mr-2"> Continue with Google
+                </button></a>
+                <br>
+                <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
+                    Not registered? <a href="{% url 'signup' %}" class="text-blue-700 hover:underline dark:text-blue-500">Create account</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+
+<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -248,7 +294,40 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const form = document.getElementById('rating-form');
     const messageElement = document.getElementById('rating-message');
+    const authModal = document.getElementById('authentication-modal');
+    const ratingInputs = document.querySelectorAll('.rating-input');
+    const reviewTextarea = document.getElementById('review');
 
+    function showAuthModal() {
+        document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+        authModal.classList.remove('hidden');
+        authModal.classList.add('flex');
+    }
+
+    function hideAuthModal() {
+        document.body.style.overflow = ''; // Restore scrolling
+        authModal.classList.add('hidden');
+        authModal.classList.remove('flex');
+    }
+
+    {% if not user.is_authenticated %}
+    ratingInputs.forEach(input => {
+        input.addEventListener('click', function(e) {
+            e.preventDefault();
+            showAuthModal();
+        });
+    });
+
+    reviewTextarea.addEventListener('focus', function(e) {
+        e.preventDefault();
+        showAuthModal();
+    });
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        showAuthModal();
+    });
+    {% else %}
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         const formData = new FormData(form);
@@ -277,6 +356,21 @@ document.addEventListener('DOMContentLoaded', function() {
             messageElement.style.display = 'block';
         })
         .catch(error => console.error('Error:', error));
+    });
+    {% endif %}
+
+    // Add this new code for handling the authentication modal
+    const closeModalButton = authModal.querySelector('[data-modal-hide="authentication-modal"]');
+
+    if (closeModalButton) {
+        closeModalButton.addEventListener('click', hideAuthModal);
+    }
+
+    // Close modal when clicking outside
+    authModal.addEventListener('click', function(e) {
+        if (e.target === authModal) {
+            hideAuthModal();
+        }
     });
 });
 </script>

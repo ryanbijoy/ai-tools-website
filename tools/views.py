@@ -11,33 +11,25 @@ from django.template.loader import render_to_string
 from django.contrib.auth import logout, login, authenticate, views as auth_views
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator
-from django.db.models import Avg
 from .token import account_activation_token
 from .forms import SignUpForm, LoginForm
-from .models import AiTool, ToolRating
-from .promotion import multi_promotion
+from .models import AiTool, ToolRating, Category
+from .promotion import multi_promotion, testimonials, promotion_card
+from .llm_model.input import ask_question
 
 
 def homepage(request):
-    featured_tools = ["ChatGPT", "10Web", "11ElevenLabs", "InVideo"]
-    categories = ["Featured", "Image Generation", "Conversational AI", "Writing Assistant", "Workflow Automation", "Meeting Assistant"]
+    ai_tools = None
+    categories = Category.objects.prefetch_related('toolcategory').filter(active=True)
 
-    section_category = request.GET.get('category', 'Featured')
+    if request.method == 'POST':
+        user_prompt = request.POST.get("prompt")
+        if user_prompt:
+            result = [ask_question(user_prompt)]
+            ai_tools = AiTool.objects.filter(ai_tool__in=result)
 
-    if section_category == "Featured":
-        ai_tools = AiTool.objects.filter(ai_tool__in=featured_tools)[:4]
-    else:
-        ai_tools = AiTool.objects.filter(category=section_category)[:4]
-
-    for tool in ai_tools:
-        avg_rating = ToolRating.objects.filter(ai_tool=tool.ai_tool).aggregate(Avg('star_rating'))['star_rating__avg'] or 0
-        total_votes = ToolRating.objects.filter(ai_tool=tool.ai_tool).count() or 0
-        tool.total_votes = total_votes
-        tool.avg_rating = avg_rating
-
-    return render(request, "index.html",
-                  {"ai_tools": ai_tools, "multi_promotion": multi_promotion, "categories": categories,
-                   "featured_tools": featured_tools, "selected_category": section_category})
+    return render(request, "index.html", {"ai_tools": ai_tools, "categories": categories, "category_count": categories.count(),
+                "multi_promotion": multi_promotion, "testimonial": testimonials, "card": promotion_card})
 
 
 def signup(request):
@@ -135,7 +127,10 @@ def user_login(request):
 
 
 def submit_rating(request, name):
-    ai_tool = get_object_or_404(AiTool, ai_tool=name)
+    url_tool_name = name.lower()
+    if name != url_tool_name:
+        return redirect('tool_details', name=url_tool_name)
+    ai_tool = get_object_or_404(AiTool, ai_tool__iexact=url_tool_name)
 
     if request.method == "POST":
         star_rating = request.POST.get('star_rating')
@@ -155,21 +150,15 @@ def submit_rating(request, name):
                 defaults={"review": review if review else None}
             )
 
-        total_votes = ToolRating.objects.filter(ai_tool=ai_tool).count()
-        avg_rating = ToolRating.objects.filter(ai_tool=ai_tool).aggregate(Avg('star_rating'))['star_rating__avg']
-        return JsonResponse({'success': True, "total_votes": total_votes, "avg_rating": avg_rating})
+        return JsonResponse({'success': True})
 
-    total_votes = ToolRating.objects.filter(ai_tool=ai_tool).count()
-    avg_rating = ToolRating.objects.filter(ai_tool=ai_tool).aggregate(Avg('star_rating'))['star_rating__avg']
     reviews = ToolRating.objects.filter(ai_tool=ai_tool).exclude(review__isnull=True).exclude(review='')
 
     paginator = Paginator(reviews, 5)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'tool-details.html',
-                  {"total_votes": total_votes, "reviews": page_obj,
-                   "avg_rating": avg_rating, "ai_tool": ai_tool})
+    return render(request, 'tool-details.html', {"reviews": page_obj, "ai_tool": ai_tool})
 
 
 class CustomPasswordResetView(auth_views.PasswordResetView):
