@@ -23,7 +23,8 @@ function showVerifyEmail() {
     document.getElementById('verify-email-form').style.display = 'block';
 }
 document.addEventListener('DOMContentLoaded', function() {
-    if (window.location.pathname === '/reset-password/') {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (window.location.pathname === '/reset-password/' || urlParams.get('forgot-password') === 'true') {
         showForgotPassword();
     } else if (window.location.pathname === '/reset-password-sent/') {
         showVerifyEmail();

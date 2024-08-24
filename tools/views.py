@@ -17,6 +17,7 @@ from .models import AiTool, ToolRating, Category
 from .promotion import multi_promotion, testimonials, promotion_card
 from .llm_model.input import ask_question
 import json
+from django.http import JsonResponse
 
 
 def homepage(request):
@@ -28,6 +29,20 @@ def homepage(request):
         if user_prompt:
             result = json.loads(ask_question(user_prompt))
             ai_tools = AiTool.objects.filter(ai_tool__in=result)
+            
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                tools_data = []
+                for tool in ai_tools:
+                    tools_data.append({
+                        'name': tool.ai_tool,
+                        'category': tool.category.first().title if tool.category.exists() else '',
+                        'description': tool.description,
+                        'logo': tool.logo,
+                        'website_url': tool.website_url,
+                        'avg_rating': tool.avg_rating(),
+                        'total_votes': tool.total_votes(),
+                    })
+                return JsonResponse({'tools': tools_data})
 
     return render(request, "index.html", {"ai_tools": ai_tools, "categories": categories, "category_count": categories.count(),
                 "multi_promotion": multi_promotion, "testimonial": testimonials, "card": promotion_card})
@@ -102,6 +117,7 @@ def authentication_modal_view(request):
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
+            print(email, password)
             user = authenticate(request, username=email, password=password)
             if user is not None:
                 login(request, user)

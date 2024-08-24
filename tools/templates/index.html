@@ -34,11 +34,19 @@
 </div>
 
 <section id="about" class="about section">
-    {% if ai_tools %}
     <div class="container splide" style="display: block;" id="search_results">
         <div class="splide__track">
+            <ul class="splide__list" id="search_results_list">
+                <!-- Search results will be dynamically inserted here -->
+            </ul>
+        </div>
+    </div>
+
+    {% for category in categories %}
+    <div class="container splide" {% if forloop.counter0 == 0 %} style="display: block;" {% else %}  style="display: none;" {% endif %} id="category_{{ forloop.counter0 }}" data-aos="fade-up">
+        <div class="splide__track">
             <ul class="splide__list">
-                {% for ai_tool in ai_tools %}
+                {% for ai_tool in category.toolcategory.all %}
                     <li class="splide__slide">
                         <div class="content text-center py-3 d-flex flex-column h-100">
                             <div class="testimonial-item">
@@ -65,40 +73,7 @@
             </ul>
         </div>
     </div>
-{% else %}
-{% for category in categories %}
-    <div class="container splide" {% if forloop.counter0 == 0 %} style ="display: block;" {% else %}  style="display: none;" {% endif %} id="category_{{ forloop.counter0 }}" data-aos="fade-up">
-    <div class="splide__track">
-        <ul class="splide__list">
-            {% for ai_tool in category.toolcategory.all %}
-                <li class="splide__slide">
-                    <div class="content text-center py-3 d-flex flex-column h-100">
-                        <div class="testimonial-item">
-                            <div class="stars mb-2">
-                                {% for i in 5|get_range %}
-                                    <i class="bi {{ ai_tool.avg_rating|star_status:i }} text-warning"></i>
-                                {% endfor %} ({{ ai_tool.total_votes }})
-                            </div>
-                        </div>
-
-                        <a href="{% url 'tool_details' ai_tool.ai_tool %}"><img src="{% static ai_tool.logo %}" class="img-fluid mb-2" alt="" loading="lazy"></a>
-                        <h3>{{ ai_tool.category }}</h3>
-                        <a href="{% url 'tool_details' ai_tool.ai_tool %}"><h2>{{ ai_tool.ai_tool }}</h2></a>
-                        <p>{{ ai_tool.description }}</p>
-                        <div class="mt-auto">
-                            <a href="{{ ai_tool.website_url }}" target="_blank" class="btn-read-more d-inline-flex align-items-center justify-content-center">
-                                <span>Visit Site</span>
-                                <i class="bi bi-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
-{% endfor %}
-{% endif %}
+    {% endfor %}
 </section>
 
 <div class="bg-gradient-to-r from-gray-100 to-gray-50 text-gray-900">
@@ -344,6 +319,102 @@
 
     manageSplideInstances(category, count);
 }
+</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchForm = document.querySelector('form');
+    const searchResultsList = document.getElementById('search_results_list');
+    const searchResultsContainer = document.getElementById('search_results');
+    const categoryContainers = document.querySelectorAll('[id^="category_"]');
+
+    function displaySearchResults(tools) {
+        searchResultsList.innerHTML = '';
+        tools.forEach(tool => {
+            const toolHtml = `
+                <li class="splide__slide">
+                    <div class="content text-center py-3 d-flex flex-column h-100">
+                        <div class="testimonial-item">
+                            <div class="stars mb-2">
+                                ${generateStars(tool.avg_rating)} (${tool.total_votes})
+                            </div>
+                        </div>
+                        <a href="/tool/${tool.name}"><img src="/static/${tool.logo}" class="img-fluid mb-2" alt="" loading="lazy"></a>
+                        <h3>${tool.category}</h3>
+                        <a href="/tool/${tool.name}"><h2>${tool.name}</h2></a>
+                        <p>${tool.description}</p>
+                        <div class="mt-auto">
+                            <a href="${tool.website_url}" target="_blank" class="btn-read-more d-inline-flex align-items-center justify-content-center">
+                                <span>Visit Site</span>
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+            `;
+            searchResultsList.innerHTML += toolHtml;
+        });
+
+        searchResultsContainer.style.display = 'block';
+        categoryContainers.forEach(container => {
+            container.style.display = 'none';
+        });
+
+        // Reinitialize Splide for search results
+        new Splide("#search_results").mount();
+
+        // Scroll to the search results
+        scrollToSearchResults();
+    }
+
+    function scrollToSearchResults() {
+        const searchResultsContainer = document.getElementById('search_results');
+        if (searchResultsContainer) {
+            const headerHeight = document.querySelector('#header').offsetHeight;
+            const offset = headerHeight + 120; // Add extra 20px for spacing
+            const elementPosition = searchResultsContainer.getBoundingClientRect().top + window.pageYOffset;
+            const offsetPosition = elementPosition - offset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
+    }
+
+    // Check if there are stored search results and display them
+    const storedResults = {{ ai_tools|default:'null'|safe }};
+    if (storedResults) {
+        displaySearchResults(storedResults);
+    }
+
+    searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+
+        fetch('/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            displaySearchResults(data.tools);
+        });
+    });
+
+    function generateStars(rating) {
+        let stars = '';
+        for (let i = 1; i <= 5; i++) {
+            stars += `<i class="bi bi-star${i <= rating ? '-fill' : ''} text-warning"></i>`;
+        }
+        return stars;
+    }
+});
 </script>
 
 
