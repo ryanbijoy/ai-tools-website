@@ -49,7 +49,7 @@
                                 </div>
                             </div>
 
-                            <a href="{% url 'tool_details' ai_tool.ai_tool %}"><img src="{% static ai_tool.logo %}" class="img-fluid mb-2" alt=""></a>
+                            <a href="{% url 'tool_details' ai_tool.ai_tool %}"><img src="{% static ai_tool.logo %}" class="img-fluid mb-2" alt="" loading="lazy"></a>
                             <h3>{{ ai_tool.category }}</h3>
                             <a href="{% url 'tool_details' ai_tool.ai_tool %}"><h2>{{ ai_tool.ai_tool }}</h2></a>
                             <p>{{ ai_tool.description }}</p>
@@ -81,7 +81,7 @@
                             </div>
                         </div>
 
-                        <a href="{% url 'tool_details' ai_tool.ai_tool %}"><img src="{% static ai_tool.logo %}" class="img-fluid mb-2" alt=""></a>
+                        <a href="{% url 'tool_details' ai_tool.ai_tool %}"><img src="{% static ai_tool.logo %}" class="img-fluid mb-2" alt="" loading="lazy"></a>
                         <h3>{{ ai_tool.category }}</h3>
                         <a href="{% url 'tool_details' ai_tool.ai_tool %}"><h2>{{ ai_tool.ai_tool }}</h2></a>
                         <p>{{ ai_tool.description }}</p>
@@ -105,7 +105,7 @@
     <div class="container mx-auto px-6 py-16">
         <div class="flex justify-center space-x-4 mb-10">
             {% for key in multi_promotion %}
-                <a id="{{ key }}-btn" class="px-4 py-2 rounded-lg {% if key == 'Coding' %}bg-indigo-900 text-white{% else %}bg-white text-gray-800{% endif %}" onclick="showPromotion('{{ key }}')">{{ key }}</a>
+                <a id="{{ key }}-btn" class="px-4 py-2 rounded-lg {% if key == 'Coding' %}bg-indigo-900 text-white{% else %}bg-white text-gray-800{% endif %} cursor-pointer" onclick="showPromotion('{{ key }}')">{{ key }}</a>
             {% endfor %}
         </div>
 
@@ -119,7 +119,7 @@
             </div>
             <div class="md:w-full mt-10 md:mt-0">
                 <div class="relative p-6 rounded-xl">
-                    <img id="promo-img" src="{% static multi_promotion.Coding.img_url %}" alt="Coding Tool" class="rounded-xl w-full h-auto object-cover">
+                    <img id="promo-img" src="{% static multi_promotion.Coding.img_url %}" alt="Coding Tool" class="rounded-xl w-full h-auto object-cover" loading="lazy">
                 </div>
             </div>
         </div>
@@ -166,7 +166,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
             <div class="relative h-80">
-                <img src="{% static card.card1.image %}" alt="Mic Check" class="absolute inset-0 h-full w-full object-cover rounded-3xl">
+                <img src="{% static card.card1.image %}" alt="Mic Check" class="absolute inset-0 h-full w-full object-cover rounded-3xl" loading="lazy">
             </div>
             <div class="p-6 text-center">
                 <div class="flex items-center justify-center">
@@ -180,7 +180,7 @@
 
         <div>
             <div class="relative h-80">
-                <img src="{% static card.card2.image %}" alt="Studio" class="absolute inset-0 h-full w-full object-cover rounded-t-lg">
+                <img src="{% static card.card2.image %}" alt="Studio" class="absolute inset-0 h-full w-full object-cover rounded-t-lg" loading="lazy">
             </div>
             <div class="p-6 text-center">
                 <div class="flex items-center justify-center">
@@ -209,7 +209,7 @@
         </div>
         <div class="md:w-1/2 mt-10 md:mt-0 ml-40">
             <div class="relative p-6 rounded-xl">
-                <img src="{% static 'img/midjourney.png' %}" alt="Dubbing Studio" class="rounded-xl w-full h-auto object-cover">
+                <img src="{% static 'img/midjourney.png' %}" alt="Dubbing Studio" class="rounded-xl w-full h-auto object-cover" loading="lazy">
             </div>
         </div>
     </section>
@@ -234,13 +234,13 @@
                 </div>
                 <p class="text-lg leading-relaxed">{{ person.testimonial }}</p>
                 <div class="mt-6 flex items-center">
-                    <img src="{% static person.person_image %}" alt="{{ person.name }}" class="w-10 h-10 rounded-full mr-3">
+                    <img src="{% static person.person_image %}" alt="{{ person.name }}" class="w-10 h-10 rounded-full mr-3" loading="lazy">
                     <div>
                         <p class="text-sm font-semibold">{{ person.name }}</p>
                         <p class="text-xs text-gray-400">{{ person.designation }}</p>
                     </div>
                     <div class="ml-auto">
-                        <img src="{% static person.company_logo %}" alt="{{ person.name }}'s company logo" class="w-10 h-10">
+                        <img src="{% static person.company_logo %}" alt="{{ person.name }}'s company logo" class="w-10 h-10" loading="lazy">
                     </div>
                 </div>
             </div>
@@ -277,6 +277,7 @@
 
     Splide.defaults = {
         autoplay: true,
+        perMove: 1,
         interval: 2000,
         arrows: true,
         drag: 'free',

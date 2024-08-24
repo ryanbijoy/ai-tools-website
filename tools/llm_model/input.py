@@ -14,12 +14,12 @@ PROMPT_TEMPLATE = """Answer the question based only on the following context: {c
                     Answer the question based on the above context: {question}"""
 
 SYSTEM_PROMPT = """Based on the following context: {context}, please recommend the best tools for the question: {question}. 
-                    Provide the tool names only in a Python list format."""
+                    Provide the tool names only in a Python list format, like this: ["ToolName1", "ToolName2"]."""
 
 
 def ask_question(user_prompt):
     embeddings = OpenAIEmbeddings()
-    vector_store = Chroma(persist_directory="./data", embedding_function=embeddings)
+    vector_store = Chroma(persist_directory="chroma_db", embedding_function=embeddings)
     llm = ChatOpenAI(model_name="gpt-4o-mini")
 
     retriever = vector_store.as_retriever(search_type="similarity_score_threshold",

@@ -17,4 +17,5 @@ urlpatterns = [
     path("reset-password-sent/", auth_views.PasswordResetDoneView.as_view(template_name="login.html"), name="password_reset_done"),
     path("reset/<uidb64>/<token>", auth_views.PasswordResetConfirmView.as_view(template_name="password-reset.html"), name="password_reset_confirm"),
     path("reset-password-complete/", auth_views.PasswordResetCompleteView.as_view(template_name="reset-password-done.html"), name="password_reset_complete"),
+    path('login-modal/', views.authentication_modal_view, name='login_modal'),
 ]

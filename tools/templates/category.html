@@ -20,7 +20,7 @@
                     </div>
                 </div>
 
-                <a href="{% url 'tool_details' ai_tool.ai_tool %}"><img src="{% static ai_tool.logo %}" class="img-fluid mb-2" alt=""></a>
+                <a href="{% url 'tool_details' ai_tool.ai_tool %}"><img loading="lazy" src="{% static ai_tool.logo %}" class="img-fluid mb-2" alt=""></a>
                 <h3>{{ ai_tool.category }}</h3>
                 <a href="{% url 'tool_details' ai_tool.ai_tool %}"><h2>{{ ai_tool.ai_tool }}</h2></a>
                 <p>{{ ai_tool.description }}</p>

@@ -997,3 +997,15 @@ section,
 .splide__arrow--next {
   right: -50px; /* Adjust this value as needed */
 }
+
+/* Custom highlight colour for section */
+
+.specific-section ::selection {
+  background-color: lightgrey;
+  color: black;
+}
+
+.specific-section ::-moz-selection {
+  background-color: lightgrey;
+  color: black;
+}

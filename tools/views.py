@@ -16,6 +16,7 @@ from .forms import SignUpForm, LoginForm
 from .models import AiTool, ToolRating, Category
 from .promotion import multi_promotion, testimonials, promotion_card
 from .llm_model.input import ask_question
+import json
 
 
 def homepage(request):
@@ -25,7 +26,7 @@ def homepage(request):
     if request.method == 'POST':
         user_prompt = request.POST.get("prompt")
         if user_prompt:
-            result = ask_question(user_prompt)
+            result = json.loads(ask_question(user_prompt))
             ai_tools = AiTool.objects.filter(ai_tool__in=result)
 
     return render(request, "index.html", {"ai_tools": ai_tools, "categories": categories, "category_count": categories.count(),
@@ -95,6 +96,24 @@ def activate(request, uidb64, token):
         return render(request, "verification-failed.html")
 
 
+def authentication_modal_view(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=email, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('/')
+            else:
+                form.add_error(None, "Invalid email or password.")
+    else:
+        form = LoginForm()
+    
+    return render(request, 'authentication-modal.html', {'form': form})
+
+
 def user_login(request):
     if request.user.is_authenticated:
         return redirect("/")
@@ -152,13 +171,7 @@ def submit_rating(request, name):
 
         return JsonResponse({'success': True})
 
-    reviews = ToolRating.objects.filter(ai_tool=ai_tool).exclude(review__isnull=True).exclude(review='')
-
-    paginator = Paginator(reviews, 5)
-    page_number = request.GET.get('page', 1)
-    page_obj = paginator.get_page(page_number)
-
-    return render(request, 'tool-details.html', {"reviews": page_obj, "ai_tool": ai_tool})
+    return render(request, 'tool-details.html', {"ai_tool": ai_tool})
 
 
 class CustomPasswordResetView(auth_views.PasswordResetView):
