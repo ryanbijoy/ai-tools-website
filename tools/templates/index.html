@@ -8,15 +8,21 @@
 <div class="container">
   <div class="row gy-4 justify-content-center">
     <div class="col-lg-8 text-center">
-      <h1 data-aos="fade-up">Explore all the AI tools essential for your category here</h1>
-      <p data-aos="fade-up" data-aos-delay="100">We are a team of talented designers making websites with Bootstrap</p>
-      <form method="POST">
+      <h1 data-aos="fade-up">Explore AI Tools for Your Needs</h1>
+      <p data-aos="fade-up" data-aos-delay="100">Discover the perfect AI solutions to enhance your workflow</p>
+      <form id="searchForm" method="POST">
           {% csrf_token %}
           <div class="d-flex justify-content-center mt-3" data-aos="fade-up" data-aos-delay="200">
             <input class="form-control me-2" name="prompt" placeholder="Enter Your Prompt..">
             <button type="submit" class="btn-get-started">Search <i class="bi bi-arrow-right"></i></button>
           </div>
       </form>
+      <div id="loadingIndicator" class="mt-5" style="display: none;">
+        <div class="spinner-grow text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3 text-primary fw-bold">Searching for AI tools...</p>
+      </div>
     </div>
   </div>
 </div>
@@ -34,7 +40,7 @@
 </div>
 
 <section id="about" class="about section">
-    <div class="container splide" style="display: block;" id="search_results">
+    <div class="container splide" style="display: none;" id="search_results">
         <div class="splide__track">
             <ul class="splide__list" id="search_results_list">
                 <!-- Search results will be dynamically inserted here -->
@@ -324,7 +330,8 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const searchForm = document.querySelector('form');
+    const searchForm = document.getElementById('searchForm');
+    const loadingIndicator = document.getElementById('loadingIndicator');
     const searchResultsList = document.getElementById('search_results_list');
     const searchResultsContainer = document.getElementById('search_results');
     const categoryContainers = document.querySelectorAll('[id^="category_"]');
@@ -383,15 +390,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Check if there are stored search results and display them
-    const storedResults = {{ ai_tools|default:'null'|safe }};
-    if (storedResults) {
-        displaySearchResults(storedResults);
-    }
-
     searchForm.addEventListener('submit', function(e) {
         e.preventDefault();
         const formData = new FormData(this);
+
+        loadingIndicator.style.display = 'block';
+        searchResultsContainer.style.display = 'none';
 
         fetch('/', {
             method: 'POST',
@@ -404,6 +408,11 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             displaySearchResults(data.tools);
+            loadingIndicator.style.display = 'none';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            loadingIndicator.style.display = 'none';
         });
     });
 

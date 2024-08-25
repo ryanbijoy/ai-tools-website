@@ -7,7 +7,7 @@ import os
 
 os.environ['OPENAI_API_KEY'] = settings.OPENAI_API_KEY
 
-K_RESULTS = 10
+K_RESULTS = 15
 SIMILARITY_THRESHOLD = 0.4
 
 PROMPT_TEMPLATE = """Answer the question based only on the following context: {context} - 

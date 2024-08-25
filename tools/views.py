@@ -1,6 +1,5 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.contrib.auth.models import User as UserDetail
-from django.http import JsonResponse
 from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -10,7 +9,6 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.contrib.auth import logout, login, authenticate, views as auth_views
 from django.urls import reverse_lazy
-from django.core.paginator import Paginator
 from .token import account_activation_token
 from .forms import SignUpForm, LoginForm, ContactForm
 from .models import AiTool, ToolRating, Category
@@ -20,7 +18,6 @@ import json
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.core.mail import send_mail
-from django.http import JsonResponse
 
 
 def homepage(request):
@@ -31,6 +28,7 @@ def homepage(request):
         user_prompt = request.POST.get("prompt")
         if user_prompt:
             result = json.loads(ask_question(user_prompt))
+            print(result)
             ai_tools = AiTool.objects.filter(ai_tool__in=result)
             
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
