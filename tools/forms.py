@@ -55,3 +55,11 @@ class LoginForm(forms.Form):
         if not User.objects.filter(email=email.lower()).exists():
             raise forms.ValidationError("This Email does not exist.")
         return email.lower()
+
+
+class ContactForm(forms.Form):
+    first_name = forms.CharField(max_length=100)
+    last_name = forms.CharField(max_length=100)
+    email = forms.EmailField()
+    subject = forms.CharField(max_length=200)
+    message = forms.CharField(widget=forms.Textarea)

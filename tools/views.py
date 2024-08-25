@@ -12,11 +12,14 @@ from django.contrib.auth import logout, login, authenticate, views as auth_views
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator
 from .token import account_activation_token
-from .forms import SignUpForm, LoginForm
+from .forms import SignUpForm, LoginForm, ContactForm
 from .models import AiTool, ToolRating, Category
 from .promotion import multi_promotion, testimonials, promotion_card
 from .llm_model.input import ask_question
 import json
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.core.mail import send_mail
 from django.http import JsonResponse
 
 
@@ -212,3 +215,36 @@ def terms_of_service(request):
 
 def privacy_policy(request):
     return render(request, "privacy-policy.html")
+
+
+def contact(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            email = form.cleaned_data['email']
+            subject = form.cleaned_data['subject']
+            message = form.cleaned_data['message']
+
+            # Compose email
+            full_message = f"Name: {first_name} {last_name}\nEmail: {email}\n\nMessage:\n{message}"
+            
+            try:
+                send_mail(
+                    subject,
+                    full_message,
+                    email,  # From email
+                    ['ryanbijoy2007@gmail.com'],  # To email
+                    fail_silently=False,
+                )
+                return JsonResponse({'status': 'OK'})
+            except Exception as e:
+                return JsonResponse({'status': 'ERROR', 'message': str(e)})
+        else:
+            return JsonResponse({'status': 'ERROR', 'message': form.errors})
+
+    else:
+        form = ContactForm()
+
+    return render(request, 'contact.html', {'form': form})
