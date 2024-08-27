@@ -5,7 +5,7 @@ and add these codes
 
 create db and add the info
 - DEBUG=True
-- SECRET_KEY="nc72n2nx27x27nx7bshbfwefbqi87*&&#@)&7174874139247"
+- SECRET_KEY=""
 - DB_DATABASE=
 - DB_USER=
 - DB_PASSWORD=
