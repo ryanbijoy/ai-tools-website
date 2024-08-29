@@ -1,43 +1,40 @@
 multi_promotion = {
     "Coding": {
-        'title': 'Advanced Coding Tools',
-        'description': 'Boost your productivity with cutting-edge coding tools and IDEs. From code completion to debugging, streamline your development process.',
-        'img_url': "img/chatgpt.webp",
-        "website_url": "https://www.chatgpt.com"
+        'title': 'Cursor AI: Advanced Coding Tools',
+        'description': 'Enhance your coding workflow with Cursor AI, a cutting-edge IDE featuring predictive coding, real-time code completions, and intelligent project organization to boost productivity.',
+        'img_url': "img/cursor.png",
+        "website_url": "https://www.cursor.so"
     },
     "Presentation": {
-        'title': 'Professional Presentation Software',
-        'description': 'Create stunning presentations with a variety of templates and design options. Impress your audience with high-quality visuals and smooth animations.',
-        'img_url': "img/runway.png",
-        "website_url": "https://www.chatgpt.com"
-},
+        'title': 'Gamma: AI-Powered Presentation Software',
+        'description': 'Create engaging, visually stunning presentations with Gamma. Leverage AI to generate and customize slides, add interactive elements, and collaborate in real-time.',
+        'img_url': "img/gamma.png",
+        "website_url": "https://try.gamma.app"
+    },
     "Video": {
-        'title': 'Video Editing and Creation Tools',
-        'description': 'Edit and create professional-quality videos with ease. Add effects, transitions, and audio to make your videos stand out.',
-        'img_url': "img/video_editing.jpg",
-        "website_url": "https://www.chatgpt.com"
-
-},
+        'title': 'Runway: Next-Gen Video Editing',
+        'description': 'Transform your video editing with Runway. Utilize AI-powered tools for effortless video creation, including automated editing, effects, and collaborative workflows.',
+        'img_url': "img/runway.png",
+        "website_url": "https://www.runwayml.com"
+    },
     "Image": {
-        'title': 'Image Editing and Design Tools',
-        'description': 'Enhance your photos and create beautiful designs. Utilize powerful tools for retouching, layering, and creating graphics.',
-        'img_url': "img/image_editing.jpg",
-        "website_url": "https://www.chatgpt.com"
-
-},
+        'title': 'Midjourney: AI-Driven Image Creation',
+        'description': 'Explore new creative possibilities with Midjourney, an AI-powered tool for generating unique and captivating images. Perfect for artists and designers looking to push the boundaries of visual design.',
+        'img_url': "img/midjourney.png",
+        "website_url": "https://www.midjourney.com"
+    },
     "Music": {
-        'title': 'Music Production Software',
-        'description': 'Compose, edit, and produce music with advanced software. Explore a range of instruments and effects to create your unique sound.',
-        'img_url': "img/music_production.jpg",
-        "website_url": "https://www.chatgpt.com"
-
-},
+        'title': 'Suno AI: Advanced Music Production Software',
+        'description': 'Unleash your creativity with Suno AI, an innovative music production tool that uses AI to compose, edit, and produce high-quality music tracks. Explore a range of instruments and effects to craft your unique sound.',
+        'img_url': "img/suno.png",
+        "website_url": "https://www.suno.ai"
+    },
     "Chatbot": {
-        'title': 'AI-Powered Chatbot Solutions',
-        'description': 'Build and deploy intelligent chatbots to automate customer interactions. Enhance user experience with natural language processing and AI.',
-        'img_url': "img/chatbot_solutions.jpg",
-        "website_url": "https://www.chatgpt.com"
-},
+        'title': 'Claude: AI-Powered Chatbot Solutions',
+        'description': 'Build and deploy intelligent chatbots with Claude. Leverage advanced natural language processing to automate customer interactions and enhance user experiences.',
+        'img_url': "img/claude.png",
+        "website_url": "https://www.anthropic.com/claude"
+    }
 }
 
 featured_tools = ["ChatGPT", "10Web", "11ElevenLabs", "InVideo", "AIVA"]

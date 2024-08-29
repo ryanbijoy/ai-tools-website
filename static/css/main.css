@@ -979,3 +979,21 @@ section,
     ring-color: #3b82f6;
     border-color: #3b82f6;
 }
+
+.other-buttons {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background: var(--accent-color);
+    color: #ffffff;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+}
+
+@media (min-width: 768px) {
+    .other-buttons {
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+    }
+}

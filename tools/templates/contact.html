@@ -40,7 +40,7 @@
                     <textarea name="message" id="message" rows="4" class="contact-form" placeholder="Type your message..."></textarea>
                     <div id="message-error" class="text-red-500 text-sm mt-1 hidden"></div>
                 </div>
-                <button type="submit" id="submit-btn" class="w-full bg-red-500 text-white py-2 rounded-md hover:bg-red-600 transition-colors">
+                <button type="submit" id="submit-btn" class="w-full bg-red-500 text-white py-2 rounded-md other-buttons">
                     <span id="submit-text">Send message</span>
                     <span id="loading-spinner" class="hidden">
                         <svg class="animate-spin h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -66,10 +66,8 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Reset error messages
         document.querySelectorAll('[id$="-error"]').forEach(el => el.classList.add('hidden'));
         
-        // Show loading spinner
         submitText.classList.add('hidden');
         loadingSpinner.classList.remove('hidden');
         submitBtn.disabled = true;
@@ -106,7 +104,6 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('An error occurred. Please try again.');
         })
         .finally(() => {
-            // Hide loading spinner and restore button state
             loadingSpinner.classList.add('hidden');
             submitText.classList.remove('hidden');
             submitBtn.disabled = false;

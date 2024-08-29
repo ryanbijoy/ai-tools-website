@@ -201,12 +201,6 @@ def blog(request):
     return render(request, "blog.html")
 
 
-def tool_categories(request):
-    ai_tool = AiTool.objects.all()
-
-    return render(request, "category.html", {"ai_tools": ai_tool})
-
-
 def terms_of_service(request):
     return render(request, "terms-of-service.html")
 

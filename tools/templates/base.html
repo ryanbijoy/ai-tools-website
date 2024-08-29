@@ -44,34 +44,47 @@
       background-color: lightgrey;
       color: black;
   }    
+
+  @media (max-width: 768px) {
+    .header {
+      padding: 10px 0;
+    }
+    .navmenu {
+      display: none;
+    }
+    .mobile-nav-toggle {
+      display: block;
+    }
+    .dropdown-content {
+      width: 100%;
+      left: 0;
+    }
+  }
 </style>
 
 <body class="index-page">
 
 <header id="header" class="header d-flex align-items-center fixed-top">
-  <div class="container-fluid container-xl position-relative d-flex align-items-center">
-    <a href="/" class="logo d-flex align-items-center me-auto">
-      <img src="{% static 'img/logo.png' %}" alt="">
-      <h1 class="sitename">FlexStart</h1>
+  <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+    <a href="/" class="logo d-flex align-items-center">
+      <img src="{% static 'img/logo.png' %}" alt="" class="img-fluid">
+      <h1 class="sitename d-none d-sm-block">FlexStart</h1>
     </a>
 
-    <nav id="navmenu" class="navmenu">
-      <ul>
-        <li><a href="{% url 'categories' %}">Categories</a></li>
-      </ul>
-      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-    </nav>
 
-    {% if user.is_authenticated %}
-    <div class="w-80">
+    <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
+
+    <div class="ml-auto d-flex align-items-center">
+      <a href="{% url 'contact' %}" class="btn-contact mr-2">Contact</a>
+      {% if user.is_authenticated %}
       <div class="relative">
-          <div id="profile" class="flex items-center cursor-pointer p-4 rounded-lg dropdown">
-              <div class="bg-blue-500 text-white rounded-full h-10 w-10 flex items-center justify-center text-lg font-semibold mr-3">T</div>
-              <div>
-                  <p class="text-sm font-semibold">Test User</p>
-                  <p class="text-sm text-gray-500">My Workspace</p>
+          <div id="profile" class="flex items-center cursor-pointer p-2 rounded-lg dropdown">
+              <div class="bg-blue-500 text-white rounded-full h-8 w-8 flex items-center justify-center text-sm font-semibold mr-2">T</div>
+              <div class="hidden sm:block">
+                  <p class="text-xs font-semibold">Test User</p>
+                  <p class="text-xs text-gray-500">My Workspace</p>
               </div>
-              <svg class="w-4 h-4 ml-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
               </svg>
           </div>
@@ -81,10 +94,10 @@
               <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm text-red-500 hover:bg-red-100 rounded-md">Sign out</a>
           </div>
       </div>
-  </div>
-    {% else %}
-    <a class="btn-getstarted flex-md-shrink-0" href="{% url 'signup' %}">Get Started</a>
-    {% endif %}
+      {% else %}
+      <a class="btn-getstarted flex-shrink-0" href="{% url 'signup' %}">Get Started</a>
+      {% endif %}
+    </div>
   </div>
 </header>
 
@@ -98,35 +111,35 @@
   <div class="container">
     <div class="row gy-4">
       <!-- About Section -->
-      <div class="col-lg-3 col-md-6 footer-about">
+      <div class="col-12 col-md-6 col-lg-3 footer-about mb-4">
         <a href="/" class="d-flex align-items-center text-dark mb-3">
           <span class="sitename fs-3 fw-bold">FlexStart</span>
         </a>
       </div>
 
       <!-- Useful Links Section -->
-      <div class="col-lg-3 col-md-6 footer-links">
-        <h4 class="text-uppercase fw-bold">Useful Links</h4>
+      <div class="col-12 col-sm-6 col-md-6 col-lg-3 footer-links mb-4">
+        <h4 class="text-uppercase fw-bold mb-3">Useful Links</h4>
         <ul class="list-unstyled">
-          <li><a href="/" class="text-dark">Home</a></li>
-          <li><a href="#" class="text-dark">Services</a></li>
-          <li><a href="{% url 'contact' %}" class="text-dark">Contact</a></li>
+          <li class="mb-2"><a href="/" class="text-dark">Home</a></li>
+          <li class="mb-2"><a href="#" class="text-dark">Services</a></li>
+          <li class="mb-2"><a href="{% url 'contact' %}" class="text-dark">Contact</a></li>
         </ul>
       </div>
 
       <!-- Company Section -->
-      <div class="col-lg-3 col-md-6 footer-links">
-        <h4 class="text-uppercase fw-bold">Company</h4>
+      <div class="col-12 col-sm-6 col-md-6 col-lg-3 footer-links mb-4">
+        <h4 class="text-uppercase fw-bold mb-3">Company</h4>
         <ul class="list-unstyled">
-          <li><a href="{% url 'privacy_policy' %}" class="text-dark">Privacy Policy</a></li>
-          <li><a href="{% url 'terms_of_service' %}" class="text-dark">Terms of Service</a></li>
+          <li class="mb-2"><a href="{% url 'privacy_policy' %}" class="text-dark">Privacy Policy</a></li>
+          <li class="mb-2"><a href="{% url 'terms_of_service' %}" class="text-dark">Terms of Service</a></li>
         </ul>
       </div>
 
       <!-- Follow Me Section -->
-      <div class="col-lg-3 col-md-6">
-        <h4 class="text-uppercase fw-bold">Follow Me</h4>
-        <p>Stay connected with me on social media for the latest updates, news, and insights.</p>
+      <div class="col-12 col-md-6 col-lg-3 mb-4">
+        <h4 class="text-uppercase fw-bold mb-3">Follow Me</h4>
+        <p class="mb-3">Stay connected with me on social media for the latest updates, news, and insights.</p>
         <div class="social-links d-flex gap-3 mt-3">
           <a href="" target="_blank" class="text-dark fs-4"><i class="bi bi-linkedin"></i></a>
           <a href="" target="_blank" class="text-dark fs-4"><i class="bi bi-twitter"></i></a>

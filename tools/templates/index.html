@@ -7,13 +7,13 @@
 <section id="hero" class="hero section">
 <div class="container">
   <div class="row gy-4 justify-content-center">
-    <div class="col-lg-8 text-center">
-      <h1 data-aos="fade-up">Explore AI Tools for Your Needs</h1>
-      <p data-aos="fade-up" data-aos-delay="100">Discover the perfect AI solutions to enhance your workflow</p>
-      <form id="searchForm" method="POST">
+    <div class="col-12 col-lg-8 text-center">
+      <h1 data-aos="fade-up" class="text-3xl md:text-4xl lg:text-5xl">Explore AI Tools for Your Needs</h1>
+      <p data-aos="fade-up" data-aos-delay="100" class="text-lg md:text-xl">Discover the perfect AI solutions to enhance your workflow</p>
+      <form id="searchForm" method="POST" class="mt-4">
           {% csrf_token %}
-          <div class="d-flex justify-content-center mt-3" data-aos="fade-up" data-aos-delay="200">
-            <input class="form-control me-2" name="prompt" placeholder="Enter Your Prompt..">
+          <div class="d-flex flex-column flex-md-row justify-content-center mt-3" data-aos="fade-up" data-aos-delay="200">
+            <input class="form-control mb-2 mb-md-0 me-md-2" name="prompt" placeholder="Enter Your Prompt..">
             <button type="submit" class="btn-get-started">Search <i class="bi bi-arrow-right"></i></button>
           </div>
       </form>
@@ -28,11 +28,11 @@
 </div>
 </section>
 
-<div class="category-buttons-container">
-    <div class="flex items-center space-x-4">
-        <span class="font-semibold">Category:</span>
+<div class="category-buttons-container overflow-x-auto">
+    <div class="flex items-center space-x-4 py-2">
+        <span class="font-semibold whitespace-nowrap">Category:</span>
         {% for category in categories %}
-            <button onclick="filterCategory({{ forloop.counter0 }}, {{ category_count }})" class="px-4 py-2 rounded-full border text-sm {% if selected_category == category %}bg-blue-100 border-green-300 text-blue-700{% else %}bg-white border-gray-300 hover:bg-gray-100 text-gray-700{% endif %} focus:outline-none">
+            <button onclick="filterCategory({{ forloop.counter0 }}, {{ category_count }})" class="px-4 py-2 rounded-full border text-sm whitespace-nowrap {% if selected_category == category %}bg-blue-100 border-green-300 text-blue-700{% else %}bg-white border-gray-300 hover:bg-gray-100 text-gray-700{% endif %} focus:outline-none">
                 {{ category.title }}
             </button>
         {% endfor %}
@@ -63,10 +63,10 @@
                                 </div>
                             </div>
 
-                            <a href="{% url 'tool_details' ai_tool.ai_tool %}"><img src="{% static ai_tool.logo %}" class="img-fluid mb-2" alt="" loading="lazy"></a>
-                            <h3>{{ ai_tool.category }}</h3>
-                            <a href="{% url 'tool_details' ai_tool.ai_tool %}"><h2>{{ ai_tool.ai_tool }}</h2></a>
-                            <p>{{ ai_tool.description }}</p>
+                            <a href="{% url 'tool_details' ai_tool.ai_tool %}"><img src="{% static ai_tool.logo %}" class="img-fluid mb-2 mx-auto" alt="" loading="lazy"></a>
+                            <h3 class="text-lg">{{ category.title }}</h3>
+                            <a href="{% url 'tool_details' ai_tool.ai_tool %}"><h2 class="text-xl font-bold">{{ ai_tool.ai_tool }}</h2></a>
+                            <p class="text-sm">{{ ai_tool.description }}</p>
                             <div class="mt-auto">
                                 <a href="{{ ai_tool.website_url }}" target="_blank" class="btn-read-more d-inline-flex align-items-center justify-content-center">
                                     <span>Visit Site</span>
@@ -83,34 +83,33 @@
 </section>
 
 <div class="bg-gradient-to-r from-gray-100 to-gray-50 text-gray-900">
-    <div class="container mx-auto px-6 py-16">
-        <div class="flex justify-center space-x-4 mb-10">
+    <div class="container mx-auto px-4 py-8 md:py-16">
+        <div class="flex flex-wrap justify-center space-x-2 space-y-2 md:space-x-4 mb-6 md:mb-10">
             {% for key in multi_promotion %}
-                <a id="{{ key }}-btn" class="px-4 py-2 rounded-lg {% if key == 'Coding' %}bg-indigo-900 text-white{% else %}bg-white text-gray-800{% endif %} cursor-pointer" onclick="showPromotion('{{ key }}')">{{ key }}</a>
+                <a id="{{ key }}-btn" class="px-4 py-2 rounded-lg text-base font-medium {% if key == 'Coding' %}bg-indigo-900 text-white h-10 {% else %}bg-white text-gray-800{% endif %} cursor-pointer hover:bg-opacity-90 transition duration-300 ease-in-out" onclick="showPromotion('{{ key }}')">{{ key }}</a>
             {% endfor %}
         </div>
 
         <div class="flex flex-col lg:flex-row items-center lg:justify-between">
-            <div class="lg:w-2/3 mb-10 lg:mb-0">
-                <h1 id="promo-title" class="text-4xl md:text-5xl font-bold mb-6">{{ multi_promotion.Coding.title }}</h1>
-                <p id="promo-description" class="text-lg text-gray-700 mb-8">
+            <div class="lg:w-1/2 mb-6 lg:mb-0">
+                <h1 id="promo-title" class="text-2xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6">{{ multi_promotion.Coding.title }}</h1>
+                <p id="promo-description" class="text-base md:text-lg text-gray-700 mb-6 md:mb-8">
                     {{ multi_promotion.Coding.description }}
                 </p>
-            <a href="{{ multi_promotion.Coding.website_url }}" target="_blank" class="inline-block px-8 py-2 bg-blue-500 text-white text-lg font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-blue-400">Try it out</a>
+                <a id="promo-link" href="{{ multi_promotion.Coding.website_url }}" target="_blank" class="other-buttons">Try it out</a>
             </div>
-            <div class="md:w-full mt-10 md:mt-0">
-                <div class="relative p-6 rounded-xl">
-                    <img id="promo-img" src="{% static multi_promotion.Coding.img_url %}" alt="Coding Tool" class="rounded-xl w-full h-auto object-cover" loading="lazy">
+            <div class="w-full lg:w-1/2 mt-6 lg:mt-0">
+                <div class="relative p-4 md:p-6 rounded-xl">
+                    <img id="promo-img" src="{% static multi_promotion.Coding.img_url %}" alt="Coding Tool" class="rounded-xl w-full h-auto object-cover max-h-96" loading="lazy">
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-
-<div class="bg-gray-50 flex items-center justify-center h-screen">
-    <div class="max-w-6xl flex items-start justify-center space-x-12">
-        <div class="w-6/12">
+<div class="bg-gray-50 flex items-center justify-center py-12 px-4">
+    <div class="max-w-6xl w-full flex flex-col md:flex-row items-start justify-center space-y-8 md:space-y-0 md:space-x-12">
+        <div class="w-full md:w-6/12">
             <div class="aspect-w-16 aspect-h-9">
                 <video id="effortless-website-builder" width="100%" height="auto" autoplay loop muted playsinline>
                     <source src="https://res2.weblium.site/file/weblium-video/65852a3f77c5d5000e9b995e" type="video/mp4">
@@ -118,98 +117,96 @@
             </div>
         </div>
 
-        <div class="w-6/12 p-6 bg-blue-100 rounded-3xl">
-            <h1 class="text-3xl font-bold text-gray-700 mb-6">Are you ready to go beyond a template?</h1>
-            <p class="text-xl text-gray-600 mb-8">Flex block gives you a chance to bring your wildest ideas to life.</p>
-            <div class="space-y-8 mb-8">
+        <div class="w-full md:w-6/12 p-6 bg-blue-100 rounded-3xl">
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-700 mb-4 md:mb-6">Are you ready to go beyond a template?</h1>
+            <p class="text-lg md:text-xl text-gray-600 mb-6 md:mb-8">Flex block gives you a chance to bring your wildest ideas to life.</p>
+            <div class="space-y-6 md:space-y-8 mb-6 md:mb-8">
                 <div class="flex items-start space-x-4">
                     <div>
-                        <h2 class="text-xl font-semibold text-gray-700">Freedom to realize your ideas</h2>
-                        <p class="text-lg text-gray-600">Seamlessly move and modify elements without restrictions.</p>
+                        <h2 class="text-lg md:text-xl font-semibold text-gray-700">Freedom to realize your ideas</h2>
+                        <p class="text-base md:text-lg text-gray-600">Seamlessly move and modify elements without restrictions.</p>
                     </div>
                 </div>
                 <div class="flex items-start space-x-4">
                     <div>
-                        <h2 class="text-xl font-semibold text-gray-700">Ultimate adaptability</h2>
-                        <p class="text-lg text-gray-600">Choose a ready-made block to showcase your product and customize its layout and button design.</p>
+                        <h2 class="text-lg md:text-xl font-semibold text-gray-700">Ultimate adaptability</h2>
+                        <p class="text-base md:text-lg text-gray-600">Choose a ready-made block to showcase your product and customize its layout and button design.</p>
                     </div>
                 </div>
             </div>
-            <a href="#" class="inline-block px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">Try it out</a>
+            <a href="#" class="other-buttons">Try it out</a>
         </div>
     </div>
 </div>
 
-
-<div class="container mx-auto py-12 px-4">
-    <h2 class="text-center text-3xl font-bold mb-10">More tools from Adobe Podcast</h2>
+<div class="container mx-auto py-8 md:py-12 px-4">
+    <h2 class="text-center text-2xl md:text-3xl font-bold mb-6 md:mb-10">More tools from Adobe Podcast</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
-            <div class="relative h-80">
+            <div class="relative h-60 md:h-80">
                 <img src="{% static card.card1.image %}" alt="Mic Check" class="absolute inset-0 h-full w-full object-cover rounded-3xl" loading="lazy">
             </div>
-            <div class="p-6 text-center">
+            <div class="p-4 md:p-6 text-center">
                 <div class="flex items-center justify-center">
-                    <h3 class="text-2xl font-bold">{{ card.card1.tool_name }}</h3>
+                    <h3 class="text-xl md:text-2xl font-bold">{{ card.card1.tool_name }}</h3>
                     <span class="ml-2 bg-gray-200 text-gray-800 font-bold text-xs px-2 py-1 rounded-full">{{ card.card1.badge }}</span>
                 </div>
-                <p class="text-gray-600 font-semibold md-2">{{ card.card1.content }}</p>
-                <a href="{{ card.card1.website_url }}" class="mt-4 inline-block px-7 font-semibold py-3 bg-black text-white rounded-full">Visit Site</a>
+                <p class="text-gray-600 font-semibold mt-2">{{ card.card1.content }}</p>
+                <a href="{{ card.card1.website_url }}" class="mt-4 inline-block px-5 md:px-7 font-semibold py-2 md:py-3 bg-black text-white rounded-full">Visit Site</a>
             </div>
         </div>
 
         <div>
-            <div class="relative h-80">
+            <div class="relative h-60 md:h-80">
                 <img src="{% static card.card2.image %}" alt="Studio" class="absolute inset-0 h-full w-full object-cover rounded-t-lg" loading="lazy">
             </div>
-            <div class="p-6 text-center">
+            <div class="p-4 md:p-6 text-center">
                 <div class="flex items-center justify-center">
-                    <h3 class="text-2xl font-bold">{{ card.card2.tool_name }}</h3>
+                    <h3 class="text-xl md:text-2xl font-bold">{{ card.card2.tool_name }}</h3>
                     <span class="ml-2 bg-gray-200 text-gray-800 font-bold text-xs px-2 py-1 rounded-full">{{ card.card2.badge }}</span>
                 </div>
-                <p class="text-gray-600 font-semibold md-2">{{ card.card2.content }}</p>
-                <a href="{{ card.card2.website_url }}" class="mt-4 inline-block px-7 font-semibold py-3 bg-black text-white rounded-full">Visit Site</a>
+                <p class="text-gray-600 font-semibold mt-2">{{ card.card2.content }}</p>
+                <a href="{{ card.card2.website_url }}" class="mt-4 inline-block px-5 md:px-7 font-semibold py-2 md:py-3 bg-black text-white rounded-full">Visit Site</a>
             </div>
         </div>
     </div>
 </div>
 
 <div class="text-gray-900">
-    <section class="container mx-auto px-6 py-16 flex flex-col md:flex-row items-center">
-        <div class="md:w-1/2 max-w-lg md:pr-8">
-            <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-6">
+    <section class="container mx-auto px-4 md:px-6 py-8 md:py-16 flex flex-col md:flex-row items-center">
+        <div class="md:w-1/2 max-w-lg md:pr-8 mb-6 md:mb-0">
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-4 md:mb-6">
                 Making content universally accessible
             </h1>
-            <p class="text-lg text-gray-700 mb-8">
+            <p class="text-base md:text-lg text-gray-700 mb-6 md:mb-8">
                 From Text to Speech to AI dubbing, our tools bridge language gaps, restore voices to those who have lost them, and make digital interactions feel more human, transforming the way we connect online.
             </p>
-            <button class="flex items-center bg-indigo-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-indigo-700 focus:outline-none">
+            <button class="other-buttons">
                 Checkout the Website
             </button>
         </div>
-        <div class="md:w-1/2 mt-10 md:mt-0 ml-40">
-            <div class="relative p-6 rounded-xl">
+        <div class="md:w-1/2 mt-6 md:mt-0 md:ml-8 lg:ml-40">
+            <div class="relative p-4 md:p-6 rounded-xl">
                 <img src="{% static 'img/midjourney.png' %}" alt="Dubbing Studio" class="rounded-xl w-full h-auto object-cover" loading="lazy">
             </div>
         </div>
     </section>
 </div>
 
-
 <div class="bg-gray-50 font-sans">
-    <div class="max-w-4xl mx-auto py-16 px-4">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-black">Testimonials</h2>
-            <p class="text-3xl font-bold text-gray-600 mt-2">See what our users have to say about us</p>
+    <div class="max-w-4xl mx-auto py-8 md:py-16 px-4">
+        <div class="text-center mb-8 md:mb-12">
+            <h2 class="text-2xl md:text-3xl font-bold text-black">Testimonials</h2>
+            <p class="text-2xl md:text-3xl font-bold text-gray-600 mt-2">See what our users have to say about us</p>
             <div class="flex justify-center items-center mt-4 space-x-2">
-                <span class="bg-red-100 font-semibold text-red-600 text-sm py-1 px-2 rounded-full">Loved by Top CEOs</span>
+                <span class="bg-red-100 font-semibold text-red-600 text-xs md:text-sm py-1 px-2 rounded-full">Loved by Top CEOs</span>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             {% for key, person in testimonial.items %}
-            <div class="{% if forloop.counter|divisibleby:2 %}bg-red-500{% else %}bg-black{% endif %} text-white p-6 rounded-lg shadow-md">
+            <div class="{% if forloop.counter|divisibleby:2 %}bg-red-500{% else %}bg-black{% endif %} text-white p-4 md:p-6 rounded-lg shadow-md">
                 <div class="mb-4">
                     <span class="{% if forloop.counter == 2 %}bg-black text-white{% else %}bg-white text-black{% endif %} text-xs font-semibold px-2 py-1 rounded-full">{{ person.field }}</span>
                 </div>
@@ -241,6 +238,7 @@
         document.getElementById("promo-title").textContent = promo.title;
         document.getElementById("promo-description").textContent = promo.description;
         document.getElementById("promo-img").src = "{% static '' %}" + promo.img_url;
+        document.getElementById("promo-link").href = promo.website_url;  // Update the link URL
 
         if (currentButton) {
             currentButton.classList.remove("bg-indigo-900", "text-white");
@@ -265,7 +263,7 @@
         gap: '10px',
         pagination: true,
         height: '100px',
-        fixedHeight: '495px',
+        fixedHeight: '520px',
         perPage: 4,
     };
 
