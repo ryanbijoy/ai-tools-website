@@ -23,6 +23,7 @@ class Category(models.Model):
 
 class AiTool(models.Model):
     category = models.ManyToManyField(Category, blank=True, related_name="toolcategory")
+    category_display = models.CharField(max_length=50, null=True)
     ai_tool = models.CharField(max_length=50)
     description = models.TextField()
     media_link = models.URLField()

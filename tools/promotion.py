@@ -63,14 +63,14 @@ promotion_card = {
         "tool_name": "Runway",
         "badge": "Gen-3",
         "content": "A new frontier for fast, high-fidelity, controllable video generation.",
-        "website_url": "",
+        "website_url": "https://runwayml.com/",
         "image": "img/runway.png"
     },
     "card2": {
         "tool_name": "ChatGPT",
         "badge": "GPT4o-mini",
         "content": "Chat about email, screenshots, files, and anything on your screen.",
-        "website_url": "",
+        "website_url": "https://chatgpt.com/",
         "image": "img/chatgpt.webp"
     }
 }
