@@ -260,11 +260,14 @@
         interval: 2000,
         arrows: true,
         drag: 'free',
-        gap: '10px',
+        gap: '2rem',
         pagination: true,
-        height: '100px',
-        fixedHeight: '520px',
         perPage: 4,
+        breakpoints: {
+            1200: { perPage: 3 },
+            768: { perPage: 2 },
+            576: { perPage: 1 }
+        }
     };
 
     function manageSplideInstances(category, count) {
