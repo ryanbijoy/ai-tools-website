@@ -13,7 +13,6 @@ from .token import account_activation_token
 from .forms import SignUpForm, LoginForm, ContactForm
 from .models import AiTool, ToolRating, Category
 from .promotion import multi_promotion, testimonials, promotion_card
-from .llm_model.input import ask_question
 import json
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -27,9 +26,9 @@ def homepage(request):
     if request.method == 'POST':
         user_prompt = request.POST.get("prompt")
         if user_prompt:
-            result = json.loads(ask_question(user_prompt))
-            print(result)
-            ai_tools = AiTool.objects.filter(ai_tool__in=result)
+            keywords = user_prompt.lower().split()
+            ai_tools = AiTool.objects.filter(tags__overlap=keywords)
+            print(keywords)
             
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                 tools_data = []

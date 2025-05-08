@@ -31,6 +31,7 @@ class AiTool(models.Model):
     logo = models.CharField(max_length=50, blank=True, null=True)
     about = models.TextField()
     features = models.JSONField(default=dict)
+    tags = models.JSONField(default=list, blank=True)
     affiliate_link = models.BooleanField(default=False)
 
     def __str__(self):
