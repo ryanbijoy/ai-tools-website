@@ -17,6 +17,7 @@ import json
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.core.mail import send_mail
+from django.db.models import Q
 
 
 def homepage(request):
@@ -26,9 +27,15 @@ def homepage(request):
     if request.method == 'POST':
         user_prompt = request.POST.get("prompt")
         if user_prompt:
-            keywords = user_prompt.lower().split()
-            ai_tools = AiTool.objects.filter(tags__overlap=keywords)
-            print(keywords)
+            keywords = [word.strip().lower() for word in user_prompt.split() if word.strip()]
+            print("Search keywords:", keywords)
+            
+            ai_tools = AiTool.objects.all()
+            
+            for keyword in keywords:
+                ai_tools = ai_tools.filter(tags__icontains=keyword)
+            
+            print("Found tools:", ai_tools.count())
             
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                 tools_data = []
